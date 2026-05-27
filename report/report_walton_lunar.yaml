@@ -1,0 +1,17 @@
+# Copyright © 2026 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+kind: component
+id: walton_schemes_report
+token: walton_schemes_report
+
+component: report
+inputs:
+  title: "Rapport des schémas de Walton"
+  template: |
+    # Rapport des schémas de Walton
+    Ce rapport fournit une analyse de l'argument basée sur les schémas de Walton, identifiant les types d'arguments utilisés et leur efficacité.
+    {walton_schemes}
+  walton_schemes: "$walton_scheme_harvester"

@@ -1,0 +1,149 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+kind: agent
+id: ias_detailed_logical
+token: ias_detailed_logical
+
+agent:
+  name: "IAS: Detailed-Logical Synthesis"
+  description: >
+    Produce a precise, rigorous synthesis of an argument using the Integrated Argument
+    Synthesizer (IAS) workflow. Prioritize formal correctness, explicit inference links,
+    and traceable citations over persuasion.
+
+    style_targets:
+      tone: "neutral, technical, objective"
+      structure: "explicit P→L→C chain; each link labeled with a Walton scheme + ≥1 CQ answered"
+      detail: "high; include definition conflicts and resolution notes"
+      citations: "use evidence codes like [definitions:<id>], [assumptions:<id>] after each item"
+
+  instructions: |
+    goal: Create a detailed, logically rigorous argument synthesis using IAS.
+
+    procedure:
+      - step: "Parse Original"
+        actions:
+          - "Enumerate premises P1..Pn and conclusions C1..Cm."
+      - step: "Load & Normalize (IAS priority)"
+        actions:
+          - "Load JSONs; keep only items directly supporting inference validity."
+          - "Mark assumptions as required/bridging vs. optional; flag confidence."
+      - step: "Harmonize Terms"
+        actions:
+          - "Build Term Map; select canonical definitions; record discarded alternatives + rationale."
+      - step: "Construct Inference Chain"
+        actions:
+          - "Write minimal Premises (P#)."
+          - "Derive Lemmas (L#) with Scheme label and ≥1 CQ answer."
+          - "State Conclusion (C#) with Scheme + CQ."
+      - step: "Validation"
+        actions:
+          - "Check non-circularity; quantifiers/scope; time/jurisdiction alignment; scheme fit."
+      - step: "Outputs"
+        actions:
+          - "Produce only Human-readable Markdown."
+
+    output_format:
+      human_readable: |
+        # Harmonized Inference Chain (Detailed & Logical)
+
+        Definitions (formal, minimal)
+        - <Term> — <normalized definition> [definitions:<id>]
+
+        Term Map (synonym → canonical)
+        - "<variant>" → <CanonicalTerm>
+
+        Premises
+        P1. … [factual:<id> | assumptions:<id>]
+        P2. … [definitions:<id>]
+
+        Lemmas
+        L1. … (from P1,P2) — Scheme: <WaltonLabel>; CQ: <answer> [schemes:<id>]
+
+        Conclusion
+        C1. … (from L1, …) — Scheme: <WaltonLabel>; CQ: <answer> [schemes:<id>]
+
+        Objection-Handling
+        - Constitutional/Jurisdiction note: … [constitutional:<id>]
+        - Ethical stance note: … [ethical:<id>]
+      machine_readable_json_shape:
+        term_map:
+          - variant: "string"
+            canonical: "string"
+            source: "definitions:<id>"
+        definitions:
+          - term: "string"
+            definition: "string"
+            source: "definitions:<id>"
+        premises:
+          - id: "P1"
+            text: "string"
+            evidence: ["factual:<id>", "assumptions:<id>"]
+        lemmas:
+          - id: "L1"
+            text: "string"
+            from: ["P1","P2"]
+            scheme:
+              label: "WaltonLabel"
+              critical_questions:
+                - cq: "string"
+                  answer: "string"
+            evidence: ["schemes:<id>"]
+        conclusion:
+          id: "C1"
+          text: "string"
+          from: ["L1"]
+          scheme:
+            label: "WaltonLabel"
+            critical_questions:
+              - cq: "string"
+                answer: "string"
+
+    constraints:
+      - "No metaphor or emotive language."
+      - "Include only content that changes or secures the inference."
+      - "If something is missing, add 'GAP: <one-sentence query>'."
+      - "Every link must have Scheme + ≥1 CQ answer."
+      - "Output must be valid Markdown only (no JSON, YAML, schema keys, or code fences)."
+      - "Return only the Human-readable section."
+
+    checklist:
+      - "Canonical terms fixed; conflicts resolved and noted"
+      - "Each link has Scheme + CQ"
+      - "Jurisdiction/time consistent"
+      - "Minimal sufficiency achieved"
+      - "Human-readable chain is complete and internally consistent"
+
+    run_instructions:
+      - "Set ARG_TEXT and provide any available JSON files."
+      - "Execute procedure and return the human-readable Markdown output."
+
+  message: |
+    Please follow the IAS: Detailed-Logical Synthesis instructions to produce the outputs.
+     using as inputs the argument and all the enrichment done prior.
+    Return only clean Markdown formatted for direct insertion into a report.
+    Argument:
+    {argument}
+    Definitions JSON:
+    {definitions_json}
+    Assumptions JSON:
+    {assumptions_json}
+    Walton Schemes JSON:
+    {schemes_json}
+    Constitutional Alignment JSON:
+    {constitutional_alignment_json}
+    Ethical Stance JSON:
+    {ethical_alignment_json}
+  adapter: openai
+  settings:
+    model: gpt-5
+
+inputs:
+  argument: "&argument"
+  definitions_json: "$definition_harvester"
+  assumptions_json: "$assumption_harvester"
+  schemes_json: "$walton_scheme_harvester"
+  constitutional_alignment_json: "$constitutional_alignment_harvester"
+  ethical_alignment_json: "$ethical_stance_harvester"

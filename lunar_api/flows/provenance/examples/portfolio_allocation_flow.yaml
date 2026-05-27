@@ -1,0 +1,312 @@
+# Copyright © 2026 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Danilo Gusicuma <danilo@lunarbase.ai>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+version: 1.0.0
+id: portfolio_allocation_flow
+name: Portfolio Allocation Flow
+description: A flow to generate a Report on portfolio allocation based on CMA data and a Monte Carlo simulation.
+
+steps:
+  portfolio_allocation_input_formatter:
+    llm:
+      provider: openai
+      structured: true
+      schema:
+        $defs:
+          AssetWeight:
+            description: Asset weight for benchmark portfolio.
+            properties:
+              asset_name:
+                description: Name of the asset
+                title: Asset Name
+                type: string
+              weight:
+                description: Weight for this asset (decimal between 0 and 1)
+                title: Weight
+                type: number
+            required:
+            - asset_name
+            - weight
+            title: AssetWeight
+            type: object
+          BoxConstraint:
+            description: Box constraint for an asset.
+            properties:
+              asset_name:
+                description: Name of the asset
+                title: Asset Name
+                type: string
+              min:
+                description: Minimum weight (decimal between 0 and 1)
+                title: Min
+                type: number
+              max:
+                description: Maximum weight (decimal between 0 and 1)
+                title: Max
+                type: number
+            required:
+            - asset_name
+            - min
+            - max
+            title: BoxConstraint
+            type: object
+          GroupConstraint:
+            description: Group constraint definition for portfolio optimization.
+            properties:
+              members:
+                description: List of asset names in this group
+                items:
+                  type: string
+                title: Members
+                type: array
+              min:
+                anyOf:
+                - type: number
+                - type: 'null'
+                default: null
+                description: Minimum total weight for the group
+                title: Min
+              max:
+                anyOf:
+                - type: number
+                - type: 'null'
+                default: null
+                description: Maximum total weight for the group
+                title: Max
+            required:
+            - members
+            title: GroupConstraint
+            type: object
+          NamedGroupConstraint:
+            description: Named group constraint.
+            properties:
+              group_name:
+                description: Name of the group
+                title: Group Name
+                type: string
+              constraint:
+                $ref: '#/$defs/GroupConstraint'
+                description: The group constraint definition
+            required:
+            - group_name
+            - constraint
+            title: NamedGroupConstraint
+            type: object
+        description: 'Input for portfolio allocation using the Monte Carlo method.
+
+
+          This is an input for a Monte Carlo algorithm to find the optimal portfolio allocation
+
+          that meets specific risk and return objectives while respecting portfolio constraints.'
+        properties:
+          portfolio_benchmark_weights:
+            anyOf:
+            - items:
+                $ref: '#/$defs/AssetWeight'
+              type: array
+            - type: 'null'
+            default: null
+            description: 'Optional custom weights for the benchmark portfolio. Provide a list
+              of asset weights that must sum to 1.0. Example: [{''asset_name'': ''US Stocks'',
+              ''weight'': 0.6}, {''asset_name'': ''Bonds'', ''weight'': 0.4}]. If not provided,
+              will automatically generate equal weights for all assets.'
+            title: Portfolio Benchmark Weights
+          portfolio_box:
+            anyOf:
+            - items:
+                $ref: '#/$defs/BoxConstraint'
+              type: array
+            - type: 'null'
+            default: null
+            description: 'Optional minimum and maximum weight constraints for each asset.
+              Provide a list of box constraints. Example: [{''asset_name'': ''US Stocks'',
+              ''min'': 0.2, ''max'': 0.7}, {''asset_name'': ''Bonds'', ''min'': 0.1, ''max'':
+              0.5}]. If not provided, will automatically generate constraints based on asset
+              type: treasuries/cash get [0, 1.0], private equity/commodities get [0, 0.25],
+              others get [0, 0.5].'
+            title: Portfolio Box
+          portfolio_groups:
+            anyOf:
+            - items:
+                $ref: '#/$defs/NamedGroupConstraint'
+              type: array
+            - type: 'null'
+            default: null
+            description: 'Optional group-level constraints for diversification. Each group
+              has a name, ''members'' (list of asset names), and optional ''max''/''min''
+              (maximum/minimum total weight for the group). Example: [{''group_name'': ''EquityMax'',
+              ''constraint'': {''members'': [''US Stocks'', ''Intl Stocks''], ''max'': 0.85}}]
+              limits total equity to 85%. If not provided, will automatically create an equity
+              group constraint (max 85%) if multiple equity assets exist.'
+            title: Portfolio Groups
+          constraints_return_threshold:
+            anyOf:
+            - type: number
+            - type: 'null'
+            default: null
+            description: 'Optional minimum acceptable Compound Annual Growth Rate (CAGR) as
+              a decimal. Example: 0.05 means 5% annual return. Default is 0.02 (2%). Used
+              to evaluate whether the generated returns meet or exceed this threshold with
+              the specified probability.'
+            title: Constraints Return Threshold
+          constraints_return_alpha:
+            anyOf:
+            - type: number
+            - type: 'null'
+            default: null
+            description: 'Optional probability level (between 0 and 1) for the return constraint.
+              Example: 0.5 means the portfolio should meet the return threshold at least 50%
+              of the time. Default is 0.5. Higher values make the constraint stricter.'
+            title: Constraints Return Alpha
+          constraints_drawdown_threshold:
+            anyOf:
+            - type: number
+            - type: 'null'
+            default: null
+            description: 'Optional maximum acceptable drawdown (peak-to-trough decline) as
+              a decimal. Example: 0.4 means maximum 40% loss from peak. Default is 0.6 (60%).
+              The optimizer will try to ensure drawdowns stay below this threshold with the
+              specified probability.'
+            title: Constraints Drawdown Threshold
+          constraints_drawdown_alpha:
+            anyOf:
+            - type: number
+            - type: 'null'
+            default: null
+            description: 'Optional probability level (between 0 and 1) for the drawdown constraint.
+              Example: 0.7 means drawdowns should stay below the threshold at least 70% of
+              the time. Default is 0.6. Higher values provide more downside protection.'
+            title: Constraints Drawdown Alpha
+          constraints_te_threshold:
+            anyOf:
+            - type: number
+            - type: 'null'
+            default: null
+            description: 'Optional maximum acceptable tracking error (deviation from benchmark)
+              as a decimal. Example: 0.15 means maximum 15% deviation from the benchmark portfolio.
+              Default is 0.20 (20%). Lower values keep the portfolio closer to the benchmark.'
+            title: Constraints Te Threshold
+          constraints_te_alpha:
+            anyOf:
+            - type: number
+            - type: 'null'
+            default: null
+            description: 'Optional probability level (between 0 and 1) for the tracking error
+              constraint. Example: 0.6 means tracking error should stay below the threshold
+              at least 60% of the time. Default is 0.6. Higher values enforce tighter tracking
+              to the benchmark.'
+            title: Constraints Te Alpha
+        title: PortfolioAllocationInput
+        type: object
+      message: "Return the parameters for the allocation.\n\nUser Instructions:\n{user_instructions}"
+    inputs:
+      user_instructions: "&user_instructions"
+  get_cma_node:
+    component: get_cma_data
+    inputs:
+      kb_field_id: "&kb_field_id"
+  portfolio_allocation:
+    component: portfolio_allocation
+    inputs:
+      input_data: $portfolio_allocation_input_formatter.data
+      cma_yaml: $get_cma_node
+  executive_summary_generator:
+    llm:
+      provider: openai
+      structured: false
+      message: |
+        You are a Portfolio Allocation Professional specialized in running Monte Carlo simulations to find optimal portfolio allocations.
+
+        ## Your Task
+        From the provided Monte Carlo simulation result, generate an output in the specified markdown format.
+
+        ## Output Format
+        Brief overview of the optimization results
+
+        Format your response in clean markdown with no additional commentary or explanations beyond the structured report.
+
+        Simulation Results:
+
+        {portfolio_allocation_results}
+
+    inputs:
+      portfolio_allocation_results: $portfolio_allocation
+  
+  portfolio_allocation_table:
+    llm:
+      provider: openai
+      structured: false
+      message: |
+        You are a Portfolio Allocation Professional specialized in running Monte Carlo simulations to find optimal portfolio allocations.
+
+        ## Your Task
+        From the provided Monte Carlo simulation result, generate a markdown table showing the portfolio allocation.
+
+        ## Output Format
+        Create a markdown table with the following columns:
+          - Asset Name
+          - Optimal Weight (%)
+          - Min Constraint (%)
+          - Max Constraint (%)
+
+        Ensure the table is well-formatted and easy to read.
+
+        Simulation Results:
+
+        {portfolio_allocation_results}
+    inputs:
+      portfolio_allocation_results: $portfolio_allocation
+  
+  key_metrics_extractor:
+    llm:
+      provider: openai
+      structured: false
+      message: |
+        You are a Portfolio Allocation Professional specialized in running Monte Carlo simulations to find optimal portfolio allocations.
+
+        ## Your Task
+        From the provided Monte Carlo simulation result, extract and summarize key risk/return metrics.
+
+        ## Output Format
+        Provide a concise summary of key metrics such as:
+          - Expected Return
+          - Volatility
+          - Sharpe Ratio
+          - Maximum Drawdown
+          - Any other relevant statistics
+
+        Format your response in clean markdown with no additional commentary or explanations beyond the metrics summary.
+
+        Simulation Results:
+
+        {portfolio_allocation_results}
+
+    inputs:
+      portfolio_allocation_results: $portfolio_allocation
+
+  report:
+    component: report
+    inputs:
+      title: "Portfolio Allocation Report"
+      template: |
+        # Portfolio Allocation Report
+
+        ## Executive Summary
+        {executive_summary}
+
+        ## Portfolio Allocation Table
+        {portfolio_allocation_table}
+
+        ## Key Metrics
+        {key_metrics}
+
+        ## Raw YAML Output
+        ```
+        {raw_yaml}
+        ```
+      executive_summary: $executive_summary_generator.content
+      portfolio_allocation_table: $portfolio_allocation_table.content
+      key_metrics: $key_metrics_extractor.content
+      raw_yaml: $portfolio_allocation

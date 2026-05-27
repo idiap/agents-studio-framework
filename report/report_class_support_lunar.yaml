@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+kind: component
+id: class_support_report
+token: class_support_report
+
+component: report
+inputs:
+  title: "Rapport de soutien de classe"
+  template: |
+    # Rapport de soutien de classe
+    Ce rapport est la sortie finale de l'agent de soutien de classe, le plan de cours de soutien de classe.
+    {plan}
+   
+  # slides: "$episodes_to_slides"
+  # assessment: "$slides_to_assessment"
+  plan: "$per_objectives_to_lesson_plan"
+
+

@@ -1,0 +1,27 @@
+version = 1
+
+[[annotations]]
+path = "docs/images/*.png"
+SPDX-FileCopyrightText = "Copyright © 2026 Idiap Research Institute <contact@idiap.ch>"
+SPDX-License-Identifier = "GPL-3.0-only"
+
+[[annotations]]
+path = [
+    "lunar-chat-interface/components.json",
+    "lunar-chat-interface/package.json",
+    "lunar-chat-interface/public/*.svg",
+    "lunar-chat-interface/public/*.png",
+    "lunar-chat-interface/src/app/favicon.ico",
+    "lunar-chat-interface/src/assets/**.svg",
+    "lunar-chat-interface/src/assets/**.png",
+    "lunar-chat-interface/src/data/*.json",
+    "lunar-chat-interface/tsconfig.json",
+    "lunar_api/flows/provenance/examples/reasoning_log.json"
+]
+SPDX-FileCopyrightText = "Copyright © 2026 Idiap Research Institute <contact@idiap.ch>"
+SPDX-License-Identifier = "GPL-3.0-only"
+
+[[annotations]]
+path = "uv.lock"
+SPDX-FileCopyrightText = "Copyright © 2026 Idiap Research Institute <contact@idiap.ch>"
+SPDX-License-Identifier = "GPL-3.0-only"

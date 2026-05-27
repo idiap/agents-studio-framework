@@ -1,0 +1,49 @@
+# Copyright © 2026 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Danilo Gusicuma <danilo@lunarbase.ai>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+services:
+  lunar_api:
+    build:
+      context: .
+      dockerfile: lunar_api/Dockerfile
+      network: host
+      ssh:
+        - default
+      secrets:
+        - source: build_env
+          target: build_env
+    env_file:
+      - .env.docker
+    environment:
+      FRONTEND_URL: http://localhost:3000
+      SQLITE_DATABASE_PATH: /data/lunar_api.db
+    ports:
+      - "8000:8000"
+    volumes:
+      - lunar_api_data:/data
+    restart: unless-stopped
+
+  lunar-chat-interface:
+    build:
+      context: ./lunar-chat-interface
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_WORKSPACE: argumentation-agent
+    depends_on:
+      - lunar_api
+    env_file:
+      - ./lunar-chat-interface/.env.docker
+    environment:
+      SERVER_ADDRESS: http://lunar_api:8000
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+volumes:
+  lunar_api_data:
+
+secrets:
+  build_env:
+    file: ./.env.docker

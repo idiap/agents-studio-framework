@@ -1,0 +1,99 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+name: "IAS: Logical-Rhetorical Synthesis"
+version: "1.0"
+description: >
+  Produce a logically sound synthesis with clear, persuasive presentation for a public audience.
+  Preserve IAS rigor (traceability, scheme labels, CQ notes) while employing measured rhetoric
+  such as signposting, parallelism, and contrast pairs.
+
+style_targets:
+  tone: "confident, professional, measured"
+  rhetoric:
+    signposting: "use 'First, ..., Next, ..., Therefore ...'"
+    devices: ["parallelism", "contrast pairs"]
+  accessibility: "short to mid-length sentences; explain terms once"
+  visuals: "headings and bullets; 'Why this matters' notes"
+  citations: "use evidence codes after items"
+
+inputs:
+  ARG_TEXT: "<<paste original argument>>"
+  files:
+    assumptions: "assumptions.json # optional"
+    definitions: "definitions.json # optional"
+    constitutional: "constitutional.json # optional"
+    ethical: "ethical.json # optional"
+    factual: "factual.json # optional"
+    schemes: "schemes.json # optional"
+
+procedure:
+  - step: "Parse & Select (IAS priority)"
+    actions:
+      - "Keep high-impact assumptions, definitions, facts; prune the rest."
+  - step: "Harmonize"
+    actions:
+      - "Create Term Map; define key terms once (1–2 lines each)."
+  - step: "Narrated Logic Build"
+    actions:
+      - "Premises (numbered, one line each) with evidence codes."
+      - "Lemmas with Scheme label + 1 short CQ answer (parenthetical)."
+      - "Conclusion as a clear takeaway."
+  - step: "Anticipate Objection"
+    actions:
+      - "Name the strongest counter-point and answer it with constitutional/ethical/factual support."
+  - step: "Outputs"
+    actions:
+      - "Human-readable narrative with headers and bullets; Machine-readable JSON (IAS shape)."
+
+output_format:
+  human_readable: |
+    # The Case in Brief (Logical & Persuasive)
+
+    Key Definitions
+    - <Term> — <plain definition> [definitions:<id>]
+
+    Premises (First, Next, Finally)
+    P1. … [factual:<id>]
+    P2. … [assumptions:<id>]
+    P3. … [definitions:<id>]
+
+    Lemmas
+    L1. … — Scheme: <WaltonLabel> (CQ: <answer>) [schemes:<id>]
+
+    Therefore
+    C1. … — Scheme: <WaltonLabel> (CQ: <answer>) [schemes:<id>]
+
+    Why this matters
+    - <1–2 lines tying to stakes/policy/equity>
+
+    Objection & Response
+    - Objection: …
+    - Response: … [constitutional:<id> | ethical:<id> | factual:<id>]
+  machine_readable_json_shape:
+    premises: ["P1","P2","P3"]
+    lemmas: ["L1","L2"]
+    conclusion: "C1"
+    schemes:
+      - id: "L1"
+        label: "WaltonLabel"
+        cq:
+          - "string"
+
+constraints:
+  - "Rhetoric must never outrun the evidence; avoid over-claiming."
+  - "Each step still requires Scheme + ≥1 CQ answer."
+  - "Cut repetition; each paragraph must advance the chain."
+
+checklist:
+  - "Definitions minimal and clear"
+  - "Every link shows Scheme + CQ answer"
+  - "One best objection acknowledged & answered with cited evidence"
+  - "Readable flow with signposting"
+  - "JSON parity with text"
+
+run_instructions:
+  - "Set ARG_TEXT and provide JSON files."
+  - "Follow procedure to output both formats."

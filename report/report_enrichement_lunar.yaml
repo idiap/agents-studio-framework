@@ -1,0 +1,36 @@
+# Copyright © 2026 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+kind: component
+id: enriched_argument_report
+token: enriched_argument_report
+
+component: report
+inputs:
+  title: "Rapport d'argument enrichi"
+  template: |
+    # Rapport d'argument enrichi
+    Ce rapport présente l'analyse enrichie de l'argument fourni, incluant les hypothèses, l'alignement constitutionnel, les définitions, la position éthique et une synthèse finale.
+
+    ### Analyse des hypothèses
+    {assumption}
+
+    ### Alignement constitutionnel
+    {constitutional_alignment}
+
+    ### Définitions
+    {definitions}
+
+    ### Analyse de la position éthique
+    {ethics}
+
+    ### Résumé enrichi du texte de l'argument
+    {enriched}
+
+  enriched: "$enrichment_summary"
+  assumption: "$assumption_harvester"
+  constitutional_alignment: "$constitutional_alignment_harvester"
+  definitions: "$definition_harvester"
+  ethics: "$ethical_stance_harvester"

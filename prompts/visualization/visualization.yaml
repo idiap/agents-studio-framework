@@ -1,0 +1,164 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+name: "Argument Graph Visualization Generator"
+version: "1.0"
+description: |
+  Convert an IAS synthesized argument output (human-readable chain + trailing JSON block)
+  into a single JSON object for an interactive collapsible Pro/Con tree visualization.
+
+  The JSON output is consumed by a D3 renderer that expects:
+    - treeData.walton_schemes: [{label,color}, ...]
+    - treeData.side_tree: hierarchical tree (issue → pro/con → claims → arguments → premises)
+
+inputs:
+  synthesized_output: "<<IAS output string: Harmonized Inference Chain + trailing JSON object>>"
+
+# ==========================================================
+# REQUIRED OUTPUT (STRICT)
+# ==========================================================
+
+output_format:
+  json_schema:
+    walton_schemes:
+      - label: "string"
+        color: "hex"
+    side_tree:
+      id: "root"
+      type: "issue"
+      text: "string"
+      children: []
+
+constraints:
+  - "OUTPUT ONLY RAW JSON. No explanations, no markdown, no backticks, no prose."
+  - "The first character MUST be '{' and the last character MUST be '}'."
+  - "Output MUST contain exactly these top-level keys: walton_schemes, side_tree."
+  - "side_tree MUST have exactly two children: side_pro and side_con (even if one is empty)."
+  - "Every argument node MUST have: id, type='argument', side, scheme, summary, full, critical_questions, children."
+  - "Every premise node MUST have: id, type='premise', text. (Optional: disagrees_with)."
+  - "Scheme labels used in argument.scheme MUST match one of walton_schemes[].label exactly."
+  - "Do NOT invent new factual content; use only what exists in the IAS input."
+  - "If the IAS input has only pro-side reasoning, create an empty Con side (no claims)."
+  - "IDs must be unique, stable, and human-readable: root, side_pro, side_con, claim_pro_#, arg_pro_#, premise_P1, etc."
+
+procedure:
+  # --------------------------------------------------
+  # 0. Extract and parse the trailing JSON block
+  # --------------------------------------------------
+  - step: "Extract Machine JSON"
+    actions:
+      - "From synthesized_output, locate the LAST JSON object substring starting at the last '{' and ending at the final '}'."
+      - "Parse that substring as the canonical machine-readable IAS JSON."
+      - "If parsing fails, fall back to extracting P#, L#, C# from the human-readable section."
+
+  # --------------------------------------------------
+  # 1. Determine the root issue question (thesis)
+  # --------------------------------------------------
+  - step: "Create Root Issue"
+    actions:
+      - "Use IAS conclusion.text as the thesis basis."
+      - "Rewrite it into a short policy question (e.g., 'Should the jurisdiction ... ?')."
+      - "Set side_tree.id='root', type='issue', text=<question>."
+
+  # --------------------------------------------------
+  # 2. Collect Walton scheme labels + assign stable colors
+  # --------------------------------------------------
+  - step: "Collect Walton Schemes"
+    actions:
+      - "Collect all unique scheme labels from IAS lemmas[].scheme.label and conclusion.scheme.label."
+      - "Normalize scheme labels minimally (preserve the label text; do not shorten)."
+      - "Assign a stable distinct color per label using a fixed palette in order of first appearance."
+
+    palette:
+      - "#D84315"  # deep orange
+      - "#455A64"  # blue grey
+      - "#35D9E5"  # cyan
+      - "#FF8F00"  # amber
+      - "#7E57C2"  # purple
+      - "#43A047"  # green
+      - "#1E88E5"  # blue
+      - "#E53935"  # red
+      - "#00897B"  # teal
+      - "#6D4C41"  # brown
+
+  # --------------------------------------------------
+  # 3. Create side nodes (always both)
+  # --------------------------------------------------
+  - step: "Create Pro/Con Side Nodes"
+    actions:
+      - "Create side_pro and side_con as children under root."
+      - "side_pro: {id:'side_pro', type:'side', side:'pro', text:'Pro', children:[]}"
+      - "side_con: {id:'side_con', type:'side', side:'con', text:'Con', children:[]}"
+
+  # --------------------------------------------------
+  # 4. Build Pro claim → argument → premises (from IAS lemmas)
+  # --------------------------------------------------
+  - step: "Build Pro Subtree"
+    actions:
+      - "Treat each IAS lemma as a Pro claim (unless IAS explicitly provides con material, which is rare in IAS)."
+      - "For each lemma Li:"
+      - "  - Create claim node under side_pro:"
+      - "      id: 'claim_pro_<i>'"
+      - "      type: 'claim'"
+      - "      text: a short version of lemma.text (≤ 12 words; preserve meaning)."
+      - "  - Under that claim, create one argument node:"
+      - "      id: 'arg_pro_<i>'"
+      - "      type: 'argument'"
+      - "      side: 'pro'"
+      - "      scheme: lemma.scheme.label"
+      - "      summary: short label (≤ 12 words) capturing lemma inference"
+      - "      full: lemma.text plus any necessary context from IAS"
+      - "      critical_questions: list of lemma.scheme.critical_questions[].cq (strings only)"
+      - "      children: premises used by lemma (from lemma.from)."
+      - "  - Premise children:"
+      - "      for each premise id in lemma.from, locate IAS premises[] entry and create premise node:"
+      - "        id: 'premise_<P#>'"
+      - "        type: 'premise'"
+      - "        text: premise.text (shorten if needed, keep meaning)."
+
+  # --------------------------------------------------
+  # 5. add a top-level pro claim for the conclusion
+  # --------------------------------------------------
+  - step: "Add Main Pro Conclusion Claim (optional but recommended)"
+    actions:
+      - "Create an additional claim under side_pro representing the IAS conclusion (C1)."
+      - "This claim should appear FIRST in side_pro children."
+      - "Under it create an argument node using conclusion.scheme.label and its critical questions."
+      - "Attach lemma-claims (or lemma summaries) as children premises if helpful."
+    note: |
+      If you add this, it provides the 'main thesis → pro branch arguments' look.
+      Keep it concise and avoid duplicating the entire subtree twice.
+
+  # --------------------------------------------------
+  # 6. Build Con subtree (empty unless explicit objections exist)
+  # --------------------------------------------------
+  - step: "Build Con Subtree"
+    actions:
+      - "If IAS contains explicit counter-arguments in Objection-Handling that are substantive (not merely notes), you MAY add con claims."
+      - "Otherwise, leave side_con.children empty."
+      - "Do NOT invent con arguments."
+
+  # --------------------------------------------------
+  # 7. Detect premise disagreements (optional; safe heuristic)
+  # --------------------------------------------------
+  - step: "Detect Disagreements (optional)"
+    actions:
+      - "If both sides contain premises, compare for explicit contradictions (e.g., 'X reduces harm' vs 'X increases harm')."
+      - "If a clear contradiction is present, add disagrees_with arrays on BOTH premise nodes."
+      - "If unsure, do nothing (avoid false positives)."
+
+  # --------------------------------------------------
+  # 8. Final assembly
+  # --------------------------------------------------
+  - step: "Assemble Output JSON"
+    actions:
+      - "Return a single JSON object:"
+      - "  { walton_schemes: [...], side_tree: {...} }"
+      - "Ensure scheme labels referenced by argument.scheme exist in walton_schemes."
+      - "Ensure all required fields exist on argument nodes."
+
+output:
+  walton_schemes: "<<list of {label,color}>>"
+  side_tree: "<<root issue node with side_pro and side_con>>"

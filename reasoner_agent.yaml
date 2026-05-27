@@ -1,0 +1,103 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+name : " Specialized Reasoner Agent"
+version: "1.0"
+description: |
+  This agent orchestrates multiple reasoning harvesters in stages.
+  Stage 1: Run all enrichment harvesters to extract complementary perspectives.
+  Stage 2: Create a concise summary of all enrichment outputs for efficient downstream processing.
+  Stage 3: Pass the concise summary to the Walton Scheme Harvester to analyze the argument's structure and type.
+  Stage 4: Change the writing style to be of a certain way.
+  Stage 5: Run the Integrated Argument Synthesizer (IAS) to produce a tightened, more complete argument that integrates only the most relevant points.
+  Stage 6: Assess the quality of an argument synthesized with the Integrated Argument Synthesizer (IAS).
+  Stage 7: Convert the synthesized argument into a structured argument graph and a side-structured tree for visualization.
+goal:
+  Given an argument, generate multiple enrichments (ethical, definitional, constitutional, assumption)
+  and analyze the argument’s structure and type using the Walton argumentation scheme.
+
+inputs:
+  ARGUMENT_TEXT: "<<argument>>"
+  DOMAIN: "environment,ethics,law"
+
+stages:
+  - name: "enrichment stage"
+    type: "enrichment"
+    description : "Run all enrichment harvesters defined in config to extract ethical, definitional, constitutional, and assumption perspectives."
+    mode : "batch" # signal multiple runs
+    config_group: "enrichment_paths" # which dictionary in config.py to use
+    inputs:
+      argument_text : "{$ARGUMENT_TEXT}"
+    outputs: "enrichment_bundle" # aggregate all outputs into this JSON file
+
+  - name : "summarization stage"
+    type : "Summarization"
+    description : "create a concise summary of all enrichment outputs for efficient downstream processing. Keep key details, most importantly claims and premices"
+    prompt: |
+      You are an expert summarization agent.
+      Given the following enrichment outputs, create a concise summary that captures the key details, most importantly claims and premices.
+      Ensure the summary is clear and informative for downstream processing.
+      
+    inputs:
+      enrichment_bundle: "{$enrichment_bundle}"
+    outputs:
+      enrichment_summary: "enrichment_summary"
+
+    
+  - name: "inference stage"
+    type: "inference"
+    description : "Run the Walton Scheme Harvester to analyze the argument's structure and type."
+    handoff_key: "walton" # which harvester to use from config.py
+    inputs:
+      enrichment_summary : "{$enrichment_summary}"
+    outputs: 
+      inference_output: "inference_output"
+
+  - name : "writing stage"
+    type : "writing"
+    description : " change the writing style to be of a certain way"
+    mode : "batch"
+    config_group: "writing_paths" # which dictionary in config.py to use
+    inputs:
+      argument_text : "{$ARGUMENT_TEXT}"
+      enrichment_bundle : "{$enrichment_bundle}"
+      inference_output : "{$inference_output}"
+    outputs:
+      writing_ias: "writing_ias"
+
+  - name : "synthesizer"
+    type : "synthesizer"
+    description : "Run the Integrated Argument Synthesizer (IAS) to produce a tightened, more complete argument that integrates only the most relevant points."
+    handoff_key: "synthesis" # which harvester to use from config.py
+    inputs:
+      argument_text : "{$ARGUMENT_TEXT}"
+      enrichment_bundle : "{$enrichment_bundle}"
+      inference_output : "{$inference_output}"
+    outputs:
+      synthesized_output: "synthesized_output"
+
+  - name : "synthesis auditor"
+    type : "synthesis_auditor"
+    description : "Assess the quality of an argument synthesized with the Integrated Argument Synthesizer (IAS)."
+    handoff_key: "auditor" # which harvester to use from config.py
+    inputs:
+       synthesized_output : "{$synthesized_output}"
+    outputs:
+       final_report: "final_report"
+  
+  - name : "visualization stage"
+    type : "visualization"
+    description : "Convert the synthesized argument into a structured argument graph and a side-structured tree for visualization."
+    handoff_key: "graph" # which harvester to use from config.py
+    inputs:
+      synthesized_output : "{$synthesized_output}"
+    outputs:
+      visualization_output: "visualization_output"
+
+
+ 
+
+   
+    

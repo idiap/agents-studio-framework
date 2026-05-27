@@ -1,0 +1,196 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+name: "IAS Argument Quality Auditor (AQA)"
+version: "1.0"
+description: >
+  Assess the quality of an argument synthesized with the Integrated Argument Synthesizer (IAS).
+  Ingest the IAS human-readable chain and IAS-shaped JSON, then output a Markdown report with
+  a scorecard, findings, and prioritized fixes.
+
+inputs:
+  ARG_TEXT: "<<paste IAS human-readable synthesis (Definitions → Term Map → Premises → Lemmas → Conclusion → Objection-handling)>>"
+  ARG_JSON: "<<paste IAS machine-readable JSON (per machine_readable_json_shape)>>"
+  options:
+    audience_level: "expert | general"
+    strictness: "standard | exacting"
+    jurisdiction_focus: "CH | US | EU/ECHR | null"
+    weighting_override:
+      validity: 15
+      soundness: 10
+      clarity: 10
+      sufficiency: 10
+      scheme_fit: 15
+      cq_resolution: 10
+      evidence_trace: 10
+      legal_ethics: 8
+      scope_temporality: 6
+      bias_rhetoric: 6
+
+rubric:
+  dimensions:
+    - key: validity
+      label: "Logical validity"
+      weight: 15
+      description: "Each L/C is entailed from its parents (structure-only)."
+    - key: soundness
+      label: "Soundness"
+      weight: 10
+      description: "Premises plausibility given evidence; no known falsehoods asserted."
+    - key: clarity
+      label: "Clarity & definition coherence"
+      weight: 10
+      description: "Terms defined once; Term Map consistent; no equivocation."
+    - key: sufficiency
+      label: "Sufficiency & minimality"
+      weight: 10
+      description: "Minimal set of P/L sufficient to derive C; no superfluous steps."
+    - key: scheme_fit
+      label: "Walton scheme fit"
+      weight: 15
+      description: "Correct scheme chosen per edge; no better-fitting scheme ignored."
+    - key: cq_resolution
+      label: "Critical Questions resolution"
+      weight: 10
+      description: "Each link addresses ≥1 CQ with relevant support."
+    - key: evidence_trace
+      label: "Evidence & traceability"
+      weight: 10
+      description: "Every P/L/C cites sources; codes consistent with ARG_JSON."
+    - key: legal_ethics
+      label: "Legal/Ethical alignment"
+      weight: 8
+      description: "Jurisdiction/time-scope consistent; stance transparent."
+    - key: scope_temporality
+      label: "Scope, quantifiers, temporality"
+      weight: 6
+      description: "Quantifiers/modalities/time aligned across P/L/C."
+    - key: bias_rhetoric
+      label: "Bias & rhetoric discipline"
+      weight: 6
+      description: "Style matches target without overstating evidence."
+  scoring_scale:
+    5: "Excellent (meets all criteria; no material issues)"
+    4: "Strong (minor issues; no effect on correctness)"
+    3: "Adequate (some gaps; fixable)"
+    2: "Weak (material issues; undermines reliability)"
+    1: "Poor (major flaws; invalidates key steps)"
+    0: "Not demonstrated / missing"
+
+procedure:
+  - step: "Parse Inputs"
+    actions:
+      - "Extract P/L/C from ARG_TEXT and ARG_JSON; cross-check IDs, parents, schemes."
+      - "Build an edge list: P-set → L or L-set → C with scheme, CQs, citations."
+  - step: "Validity Check"
+    actions:
+      - "Assess structural entailment for each edge."
+      - "Flag missing bridging assumptions; note if present in files but not cited."
+  - step: "Scheme & CQ Audit"
+    actions:
+      - "Confirm Walton scheme fit; propose better alternatives if >0.6 confidence."
+      - "Verify ≥1 CQ answered with relevant evidence per edge; mark gaps."
+  - step: "Definitions & Term Map"
+    actions:
+      - "Check canonical terms; detect meaning shifts; highlight unresolved conflicts."
+  - step: "Evidence & Traceability"
+    actions:
+      - "Ensure each P/L/C cites at least one code; verify codes exist in ARG_JSON."
+      - "Find orphan claims and label as GAP."
+  - step: "Legal/Ethical Consistency"
+    actions:
+      - "If jurisdiction_focus set, verify legal note matches scope and timebound."
+      - "Check ethical stance and counter-stance are accurately represented."
+  - step: "Sufficiency & Minimality"
+    actions:
+      - "Attempt minimal derivation; remove any P/L that does not reduce support for C."
+      - "Note redundant or circular steps."
+  - step: "Quantifiers / Modality / Time"
+    actions:
+      - "Align universals/existentials and modals; note mismatches."
+  - step: "Bias & Rhetoric"
+    actions:
+      - "Ensure target style is met without over-claiming or loaded language (unless the style requires disclosed bias)."
+  - step: "Score & Recommendations"
+    actions:
+      - "Assign 0–5 per dimension; compute weighted total (0–100)."
+      - "Prioritize fixes by impact: high (validity/scheme), medium (definitions/evidence), low (rhetoric)."
+
+output_format:
+  markdown_report: |
+    # Argument Quality Report (IAS-AQA)
+
+    **Overall Score:** X/100  
+    **Profile:** Validity X/5 • Soundness X/5 • Clarity X/5 • Sufficiency X/5 • Scheme Fit X/5 • CQs X/5 • Evidence X/5 • Legal/Ethics X/5 • Scope/Time X/5 • Bias/Rhetoric X/5
+
+    ## 1) Executive Summary
+    - One-paragraph overview of strengths and the single most critical weakness.
+
+    ## 2) Scorecard
+    | Dimension | Weight | Score (0–5) | Weighted | Key Notes |
+    |---|---:|---:|---:|---|
+    | Logical validity | 15% | X | X | … |
+    | Soundness | 10% | X | X | … |
+    | Clarity & definitions | 10% | X | X | … |
+    | Sufficiency & minimality | 10% | X | X | … |
+    | Scheme fit | 15% | X | X | … |
+    | CQ resolution | 10% | X | X | … |
+    | Evidence & traceability | 10% | X | X | … |
+    | Legal/Ethical alignment | 8% | X | X | … |
+    | Scope/temporal fit | 6% | X | X | … |
+    | Bias & rhetoric | 6% | X | X | … |
+    | **Total** | 100% |  | **X/100** |  |
+
+    ## 3) Inference Chain Audit
+    - **Chain Map:** P/L → C overview (IDs).  
+    - **Edge Findings:**  
+      - **E1 (from … to …)** — Scheme: <label> • Validity: ✓/✗ • Better fit?: <alt> • CQ answered: ✓/✗ (gap: …) • Citations: […].  
+      - **E2 …**
+
+    ## 4) Definitions & Term Map
+    - Canonical terms and any shifts noted.  
+    - Conflicts + chosen resolution (with rationale).  
+    - Missing or circular definitions.
+
+    ## 5) Evidence & Traceability
+    - Orphan claims (no evidence codes).  
+    - Broken references (in ARG_TEXT but not in ARG_JSON).  
+    - Strength/quality remarks (empirical vs. anecdotal).
+
+    ## 6) Legal/Ethical Consistency
+    - Jurisdiction/time alignment verdict (if applicable).  
+    - Ethical stance transparency and handling of counter-stance.
+
+    ## 7) Scope, Quantifiers, Temporality
+    - Noted mismatches and recommended fixes.
+
+    ## 8) Red Flags & Risks
+    - Fallacies or value shifts. Over-claiming relative to evidence. Hidden assumptions.
+
+    ## 9) Prioritized Recommendations
+    - **High Impact (fix first):** <items>  
+    - **Medium:** <items>  
+    - **Low / Style:** <items>
+
+    ## 10) Appendices
+    - A. Edge-by-edge CQ checklist (answered vs. open).  
+    - B. Removed redundant steps (if any).  
+    - C. Files and codes used (from ARG_JSON.trace).
+
+constraints:
+  - "Do not invent facts; if crucial items are missing, mark GAP and specify the needed item (1 sentence)."
+  - "Keep the report concise; prefer bullets and short diagnostics."
+  - "If audience_level = 'general', add one-line glosses for technical terms."
+  - "If strictness = 'exacting', round scores down to nearest 0.5 and cap CQ dimension at 2 unless ≥1 CQ per edge is answered."
+
+computation:
+  weighted_total: "Σ(weight_i × score_i/5) × 100"
+  rounding_rules:
+    exacting: "Round per-dimension scores down to nearest 0.5; require ≥1 CQ per edge for CQ score > 2."
+
+run_instructions:
+  - "Provide ARG_TEXT and ARG_JSON."
+  - "Optionally set audience_level, strictness, jurisdiction_focus, and weighting_override."
+  - "Run procedure and return the Markdown report exactly as specified."

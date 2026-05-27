@@ -1,0 +1,26 @@
+# Copyright © 2026 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@lunarbase.ai>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+kind: component
+id: writing_report
+token: writing_report
+
+component: report
+inputs:
+  title: "Rapport d'écriture"
+  template: |
+    # Analyse de l'argument enrichi en utilisant un style d'écriture
+    Ce rapport fournit une analyse de l'argument enrichi en utilisant différents styles d'écriture IAS : logique détaillé, émotionnel-politique et logique-rhétorique.
+    ### Synthèse logique détaillée
+    {detailed_logical}
+    ### Synthèse émotionnelle-politique
+    {emotional_political}
+    ### Synthèse logique-rhétorique
+    {logical_rhetorical}
+
+  detailed_logical: "$ias_detailed_logical"
+  emotional_political: "$ias_emotional_political"
+  logical_rhetorical: "$ias_logical_rhetorical"
+

@@ -1,0 +1,34 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+kind: agent
+id: enrichment_summary
+token: enrichment_summary
+
+agent:
+  name: "Enrichement Summary Agent"
+  description: "An agent that takes various enrichment outputs and summarizes them."
+  instructions: |
+    You are an expert summarization agent.
+    Given the following enrichment outputs, create a concise summary that captures the key details, most importantly claims and premises.
+    Ensure the summary is clear and informative for downstream processing.
+    It also needs to be clean and understandable with a visually clean layout
+    Output must be valid Markdown only (no YAML, JSON, or schema keys).
+    Start with heading: '### Enrichment Summary'.
+    Then provide:
+    - '#### Core Claims and Premises' as concise bullets.
+    - '#### Key Supporting Findings' as concise bullets.
+    - '#### Open Questions' only if unresolved ambiguities remain.
+
+  message: "Summarize these following outputs: {assumption}, {constitutional_alignment}, {definition_harvest}, {ethical_stance} using the instructions given before. Return only clean Markdown formatted for direct insertion into a report."
+  adapter: openai
+  settings:
+    model: gpt-5
+
+inputs:
+  assumption: "$assumption_harvester"
+  constitutional_alignment: "$constitutional_alignment_harvester"
+  definition_harvest: "$definition_harvester"
+  ethical_stance: "$ethical_stance_harvester"

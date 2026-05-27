@@ -1,0 +1,166 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+name: "Constitutional Alignment Harvester (CoAl-H) — CH / US / EU"
+version: "1.1"
+description: |
+  Given an argument (premises + claims), identify where it aligns or misaligns with constitutional
+  frameworks of Switzerland (CH), the United States (US), and the European Union/Europe (EU/ECHR).
+  Map implicated rights/powers, apply each framework’s canonical tests (legality, proportionality,
+  scrutiny tiers, etc.), and output a concise, source-cited list per framework.
+  This version adds explicit **Human-readable summary** and a **Cross-framework note**.
+
+goal:
+  - Parse the argument to extract the state action/measure and implicated rights or powers.
+  - For each framework (CH/US/EU-ECHR), apply the appropriate doctrinal tests.
+  - Produce per-framework verdicts: aligned | partially_aligned | misaligned | unclear.
+  - Summarize findings in a concise human-readable section and provide a cross-framework synthesis note.
+
+inputs:
+  ARGUMENT_TEXT: "<<paste premises + claims>>"
+  ACTION_OR_MEASURE: "<<e.g., 'levying income tax', 'mandatory data retention', 'speech restriction'>>"
+  DOMAIN: "<<e.g., taxation, privacy, speech, equality, due process>>"
+  JURISDICTIONAL_SCOPE: "<<CH | US | EU/ECHR (any subset)>>"
+  TIMEBOUND: "<<prefer doctrine as of ≥ YYYY>>"
+  SOURCING: "<<official constitutional text + leading cases/commentaries>>"
+
+authoritative_source_priority:
+  - "Constitutional text (articles/amendments/charter provisions)."
+  - "Binding/leading jurisprudence and core doctrinal tests (e.g., CH Art. 36 BV; US scrutiny; EU Art. 52(1) CFR / ECHR)."
+  - "Reputable commentaries/handbooks and official guidance."
+
+doctrinal_tests:
+  CH:
+    label: "Swiss Federal Constitution (BV)"
+    primary_articles:
+      - "BV Art. 5 (rule of law)"
+      - "BV Art. 8 (equality)"
+      - "BV Art. 26 (property guarantee)"
+      - "BV Art. 27 (economic freedom)"
+      - "BV Art. 36 (limitations on fundamental rights)"
+      - "BV Art. 127 (taxation principles)"
+    test_steps:
+      - "Basis in law (foreseeability)"
+      - "Legitimate public interest"
+      - "Proportionality: suitability, necessity, proportionality stricto sensu"
+      - "Essence of right preserved"
+  US:
+    label: "U.S. Constitution"
+    primary_articles:
+      - "First Amendment (speech, association)"
+      - "Fourth Amendment (search/privacy)"
+      - "Fifth Amendment (Takings; Due Process)"
+      - "Fourteenth Amendment (Due Process; Equal Protection)"
+    test_steps:
+      - "Identify fundamental right and/or classification (suspect/quasi-suspect)"
+      - "Assign scrutiny tier: strict | intermediate | rational basis"
+      - "Apply tier test: aim and tailoring/fit"
+      - "Special domains: Takings vs taxation; compelled speech/payments; procedural safeguards"
+  EU_ECHR:
+    label: "EU Charter of Fundamental Rights (CFR) / European Convention on Human Rights (ECHR)"
+    primary_articles:
+      - "CFR Art. 17 (property)"
+      - "CFR Arts. 7–8 (privacy/data)"
+      - "CFR Arts. 11 (expression), 20–21 (equality), 52(1) (limitations)"
+      - "ECHR P1-1 (property), Arts. 8–11 (private life, expression, assembly), Art. 14 (non-discrimination)"
+    test_steps:
+      - "Legality (lawfulness/foreseeability)"
+      - "Legitimate aim per limitation clauses"
+      - "Proportionality: suitability, necessity, balancing (essence of right preserved)"
+      - "Margin of appreciation (ECHR context, if relevant)"
+
+strict_rules:
+  - "Cite specific provisions/articles when asserting alignment/misalignment; if uncertain, mark LOW CONFIDENCE and propose articles to verify."
+  - "Separate descriptive claims from normative/constitutional claims; lawfulness is not morality."
+  - "Report each framework independently; add a cross-framework synthesis note at the end."
+  - "Quote ≤25 words verbatim; otherwise paraphrase with citation keys."
+  - "If the argument is too abstract, still produce best-effort mapping and include clarification questions."
+
+procedure:
+  - step: "Parse the Argument"
+    actions:
+      - "Number premises P1..Pn and conclusions C1..Cm."
+      - "Extract state action/measure and implicated rights or powers."
+  - step: "Concept–Provision Mapping"
+    actions:
+      - "For each framework, list candidate rights/powers and provisions implicated by the action."
+      - "Select the most relevant provisions with short reasons."
+  - step: "Apply Framework Tests"
+    actions:
+      - "CH: Run Art. 36 BV ladder + right-specific considerations."
+      - "US: Identify right/classification, set scrutiny tier, execute tier analysis."
+      - "EU/ECHR: Check legality, aim, proportionality under CFR 52(1)/ECHR, essence of right, margin of appreciation."
+  - step: "Evidence & Counter-Arguments"
+    actions:
+      - "Note typical state justifications and common counter-claims."
+      - "Flag open doctrinal questions or splits; mark to-verify if unsure."
+  - step: "Verdicts & Clarity"
+    actions:
+      - "Issue verdict per framework with 1–2 sentence rationale and citations."
+      - "Provide confidence score and any conditions/nuances."
+  - step: "Human-readable Summary"
+    actions:
+      - "Produce a concise bullet summary for each framework: **Framework — Verdict (confidence)**, key provisions, and 1–2 highlights from the applied tests."
+  - step: "Cross-framework Note"
+    actions:
+      - "Synthesize convergences/divergences across CH/US/EU-ECHR; note where one framework is stricter/looser, typical margins of appreciation, or unique doctrines."
+      - "State a one-paragraph overall takeaway that is faithful to the per-framework findings."
+
+output_schema:
+  json_shape:
+    - framework: "CH | US | EU/ECHR"
+      measure: "string (state action inferred from the argument)"
+      implicated_rights_or_powers:
+        - label: "string"
+          provision: "e.g., BV Art. 26; Fifth Amendment Takings; CFR Art. 17; ECHR P1-1"
+          reason: "short mapping note"
+      tests:
+        legality_or_basis_in_law:
+          finding: "meets | fails | unclear"
+          note: "string"
+        legitimate_aim:
+          finding: "present | absent | contested"
+          note: "string"
+        proportionality_or_scrutiny:
+          standard: "CH proportionality | US strict/intermediate/rational | EU proportionality"
+          finding: "passes | fails | mixed"
+          note: "string"
+        essence_or_core_of_right:
+          finding: "preserved | threatened | unclear"
+          note: "string"
+      verdict: "aligned | partially_aligned | misaligned | unclear"
+      confidence: 0.0
+      citations:
+        - "[CH-Art36]"
+        - "[US-5A-Takings]"
+        - "[EU-CFR-52(1)]"
+      notes: "edge cases, competing doctrines, margin of appreciation, etc."
+  human_readable:
+    summary_bullets_format: |
+      - **Framework**: CH / US / EU(ECHR) — **Verdict**: aligned / partially aligned / misaligned (confidence 0.xx)
+        Provisions: … • Test highlights: … • Notes: …
+    cross_framework_note_format: |
+      **Cross-framework note:** Concise paragraph comparing frameworks (convergences/divergences), indicating which doctrines/tests drive differences (e.g., CH Art. 36 proportionality ladder; US scrutiny tiers and taxation/takings distinction; EU/ECHR fair-balance with margin of appreciation).
+
+failure_modes:
+  - "If action is private (no state action, US), mark UNSUITABLE FOR CONSTITUTIONAL REVIEW (explain why)."
+  - "If purely moral with no legal claim, output minimal mapping with LOW CONFIDENCE and request intended measure/jurisdiction."
+  - "If provisions plausible but unverified, list TO-VERIFY articles and mark LOW CONFIDENCE."
+
+checklist:
+  - "Action/measure clearly identified"
+  - "Provisions mapped per framework with reasons"
+  - "Proper test applied (Art. 36 BV / US scrutiny / EU proportionality)"
+  - "Verdict stated with confidence + citations"
+  - "Human-readable summary produced"
+  - "Cross-framework note included"
+  - "Divergences across frameworks noted"
+
+run_instructions:
+  - "ARGUMENT_TEXT: <<<PASTE HERE>>>"
+  - "JURISDICTIONAL_SCOPE: <<<CH | US | EU/ECHR>>>"
+  - "ACTION_OR_MEASURE (if deducible): <<<...>>>"
+  - "TIMEBOUND: <<<OPTIONAL>>>"
+  - "SOURCING: <<<OPTIONAL>>>"

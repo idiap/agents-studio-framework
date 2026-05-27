@@ -1,0 +1,150 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+name: "Assumption Harvester (AsHa)"
+version: "v1"
+description: >
+  A systematic prompt to detect all assumptions supporting an argument.
+  Given an argument (premises + claims), surface every assumption the argument relies on:
+  logical/structural, semantic/definitional, empirical/causal, normative/axiological,
+  scope/idealizations, background/world knowledge, statistical/modeling,
+  temporal/modality, authority/jurisdictional, ceteris-paribus/absence-of-alternatives.
+goal:
+  - "Surface every assumption an argument relies on (by category)."
+outputs:
+  - "Clean, de-duplicated list with type, role, evidence span, and confidence."
+
+inputs:
+  ARGUMENT_TEXT: "<<paste the full argument here (premises + claims)>>"
+  DOMAIN: "<<optional: e.g., biomedicine, macroeconomics, criminal law, AI safety>>"
+  JURISDICTION: "<<optional: e.g., EU law, US federal, WHO/ICD, ISO/IEEE>>"
+  TIMEBOUND: "<<optional: e.g., interpret terms as of ≥ YYYY>>"
+  ONTOLOGY_TERM_SOURCES: "<<optional: e.g., NCIt, FIBO, SEP, Black's Law>>"
+  GRANULARITY:
+    allowed_values: ["minimal", "standard", "exhaustive"]
+    default: "standard"
+
+assumption_taxonomy:
+  1:
+    key: logical_bridging
+    label: "Logical/Bridging (enthymeme)"
+    cue: "missing premise needed to make inference valid"
+  2:
+    key: semantic_definition
+    label: "Semantic/Definition"
+    cue: "sense/definition choices for key terms; term–type constraints"
+  3:
+    key: empirical_causal
+    label: "Empirical/Causal"
+    cue: "claims about how the world works; stability/invariance; mechanisms"
+  4:
+    key: normative_axiological
+    label: "Normative/Axiological"
+    cue: "value commitments, rights/duties, fairness criteria, objectives"
+  5:
+    key: statistical_modeling
+    label: "Statistical/Modeling"
+    cue: "distributional form, independence, stationarity, representativeness"
+  6:
+    key: measurement_operationalization
+    label: "Measurement/Operationalization"
+    cue: "how constructs are measured; thresholds, proxies, units"
+  7:
+    key: scope_idealization
+    label: "Scope/Idealization"
+    cue: "ceteris paribus; closed-world; ignoring confounders/side-effects"
+  8:
+    key: temporal_modality
+    label: "Temporal/Modal"
+    cue: "persistence over time, counterfactual reach, necessity/possibility"
+  9:
+    key: authority_jurisdictional
+    label: "Authority/Jurisdictional"
+    cue: "appeal to law/standards/codes as binding or sufficient"
+  10:
+    key: quantifier_domain
+    label: "Quantifier/Domain"
+    cue: "who/what the universal/existential ranges cover; typicality"
+  11:
+    key: pragmatic_discourse
+    label: "Pragmatic/Discourse"
+    cue: "speaker intentions, implicatures, default policies, relevance"
+  12:
+    key: data_source_reliability
+    label: "Data/Source Reliability"
+    cue: "credibility of evidence, accuracy of citations"
+  13:
+    key: feasibility_resource
+    label: "Feasibility/Resource"
+    cue: "practicality, costs, capacity is sufficient"
+
+strict_rules:
+  - "Extract assumptions only if they support at least one inference link P → C or P ↔ P."
+  - "Prefer minimal support: if two assumptions overlap, keep the weakest sufficient one."
+  - "Mark each assumption with: type, polarity, role, evidence_spans, specificity, confidence, and notes."
+  - "Do not invent domain facts; when uncertain, output a candidate with LOW confidence and include a clarification question."
+  - "Distinguish stipulative vs received assumptions."
+
+procedure:
+  parse_and_normalize:
+    - "Segment into numbered premises P1..Pn and conclusions C1..Cm."
+    - "Extract noun phrases, conditionals, quantifiers, modals, value terms, and definitions."
+  link_analysis:
+    - "For each inference edge (P-set → C or P_i → P_j), test for validity/entailment heuristically."
+    - "If invalid/underdetermined, propose bridging assumptions (enthymeme mining)."
+  detection_by_category:
+    semantic_definition: "Detect required senses, genre (legal/technical), thresholds."
+    empirical_causal: "Identify invariances (e.g., 'X causes Y', 'no confounders')."
+    normative: "Identify rights/duties, welfare criteria, priorities, risk tolerances."
+    scope_idealizations: "Detect ceteris paribus, ignoring alternatives, closed-world."
+    temporal_modal: "Identify time stability, counterfactual reach, necessity/possibility."
+    statistical_model_measurement: "Independence, representativeness, proxy validity, measurement."
+    authority_jurisdictional: "Detect appeals to law/standards and claims of sufficiency."
+    quantifier_domain: "Identify universality or typicality of quantifiers."
+  consolidate_and_minimize:
+    - "Merge duplicates; prefer general assumptions when both suffice."
+    - "Produce a minimal sufficient assumption set per inference edge."
+  quality_gates:
+    Q1_relevance: "Supports a specific edge or removes an ambiguity."
+    Q2_specificity: "Precise enough to be falsifiable or challengeable."
+    Q3_non_circularity: "Does not presuppose the conclusion."
+    Q4_transparency: "Labelled with type, role, spans, confidence."
+
+output_schema:
+  - name: assumption_list
+    type: array
+    items:
+      assumption_id: "string"
+      type: "one of logical|semantic|empirical|normative|statistical|measurement|scope|temporal|authority|quantifier|pragmatic|data_reliability|feasibility"
+      statement: "string"
+      polarity: "required|endorsed|implicit|contested"
+      role:
+        supports_edges: "array e.g. [[P1], C1]"
+        function: "bridging|disambiguation|generalization|closure"
+      evidence_spans:
+        - ref: "P1|C1"
+          span: "text excerpt"
+      specificity: "stipulative|received-standard"
+      confidence: 0.0
+      notes: "string"
+
+human_readable_format: |
+  - **[type | polarity | confidence 0.xx]** statement  
+    Supports: P?→C? • Function: … • Notes: …
+failure_modes_and_fallbacks:
+  - "If an inference can be completed by multiple alternative assumptions, list each and mark ALTERNATIVES, with recommended tests."
+  - "If the text provides a definition resolving ambiguity, prefer semantic/definition over logical bridging."
+
+checklist:
+  - "Every inference edge has a minimal support set"
+  - "Assumptions are typed and non-circular"
+  - "Duplicates merged; alternatives flagged"
+  - "Human-readable list concise"
+  - "Low-confidence items carry a clarification question"
+
+run_template:
+  ARGUMENT_TEXT: "<<PASTE HERE>>"
+  DOMAIN: "<<optional>>"
+  JURISDICTION: "<<optional>>"

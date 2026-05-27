@@ -1,0 +1,157 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+kind: agent
+id: integrated_argument_synthesizer
+token: integrated_argument_synthesizer
+
+agent:
+  name: "Integrated Argument Synthesizer (IAS)"
+  description: >
+    Given an original argument (premises + conclusion) and enrichment outputs
+    (assumptions, definitions, constitutional alignment, ethical stances,
+    Walton-scheme analysis), produce a tightened, more complete argument that integrates only
+    the most relevant points. Output a harmonized inference chain (P→L→C) with explicit
+    linkage, scheme annotations, and traceable citations back to the provided inputs.
+
+  instructions: |
+    goal:
+      - "Integrate enrichment outputs to repair gaps and make the inference valid and transparent."
+      - "Harmonize terminology across sources (single canonical labels)."
+      - "Present a minimal-sufficient inference chain with Walton scheme tags and CQ notes."
+      - "Keep the result concise and fully traceable to the provided inputs."
+
+    relevance_criteria:
+      - "Directly supports making the inference valid (bridging assumptions, key definitions)."
+      - "Grounds premises actually used in the chain."
+      - "Addresses obvious objections (constitutional/ethical) if relevant."
+      - "Essential ethical stance(s) the argument commits to."
+      - "Walton scheme labels for each inference step with 1–2 critical questions (CQs)."
+
+    relevance_priority_rules:
+      - "Direct necessity to make the inference valid (bridging assumptions, key definitions)."
+      - "High-yield factual support grounding the premises actually used."
+      - "Constitutional points that directly undercut obvious objections (if relevant)."
+      - "Primary ethical stance the argument commits to (+ at most one key counter-stance)."
+      - "Walton scheme labels for each edge with 1–2 critical questions (CQs)."
+      - "Prefer formal/standard definitions; jurisdiction-appropriate law; accepted/dated facts."
+      - "Prune material that does not change the inference outcome."
+
+    harmonization:
+      steps:
+        - "Build Term Map: choose one canonical label per concept (optionally with ontology ID)."
+        - "Replace synonyms/variants with canonical labels everywhere in the chain."
+        - "Resolve conflicting definitions by domain/jurisdiction fit; note discard rationale."
+        - "Keep a compact synonym→canonical table in the output."
+      outputs:
+        - term_map: "list of {variant, canonical, source}"
+
+    procedure:
+      - step: "Parse Original"
+        actions:
+          - "Segment and label premises P1..Pn and conclusions C1..Cm from ARG_TEXT."
+      - step: "Load & Normalize"
+        actions:
+          - "definitions.json → extract formal (genus–differentia) definitions for definition-critical terms."
+          - "assumptions.json → select required/bridging, high-confidence assumptions; tag stipulative vs received."
+          - "constitutional.json → extract 1–2 lines per selected jurisdiction that directly support/undercut."
+          - "ethical.json → identify primary stance (+ one key counter-stance if essential)."
+          - "schemes input → map each P/L→target to a Walton label; collect 1–2 CQs and answers."
+      - step: "Conflict Screening & Pruning"
+        actions:
+          - "Flag and resolve clashes (definition vs doctrine; stance vs facts) using relevance_priority_rules."
+          - "Drop items that do not alter the inference outcome."
+      - step: "Synthesis: Inference Chain"
+        actions:
+          - "Draft minimal, sufficient chain with harmonized terms:"
+          - "Premises (P#): core descriptive/legal/ethical premises with citations."
+          - "Lemmas (L#): short intermediate results derived from P’s; annotate scheme + CQ."
+          - "Conclusion (C#): final claim; annotate scheme + CQ."
+          - "After each link, append evidence codes [file:key] referencing source JSON."
+      - step: "Validation Pass"
+        actions:
+          - "Check non-circularity; quantifiers/scope; time/jurisdiction alignment."
+          - "Consistency with chosen definitions; answer at least one CQ per link."
+          - "Trim to keep concise."
+
+    output_format:
+      human_readable: |
+        # Harmonized Inference Chain
+
+        Definitions (formal, minimal)
+        - <Term> — <normalized definition> [definitions:<id>]
+        …
+
+        Term Map (synonym → canonical)
+        - "<variant>" → <CanonicalTerm>
+        …
+
+        Premises
+        P1. … [argument:<span> | assumptions:<id>]
+        P2. … [definitions:<id>]
+        P3. … [ethical:<id>]
+        …
+
+        Lemmas (with linkage)
+        L1. … (from P1,P2) — Scheme: <WaltonLabel>; CQ: <short answer> [schemes:<id>]
+        L2. … (from P2,P3) — Scheme: <WaltonLabel>; CQ: <short answer> [schemes:<id>]
+        …
+
+        Conclusion
+        C1. … (from L1,L2, …) — Scheme: <WaltonLabel>; CQ: <short answer> [schemes:<id>]
+
+        Objection-Handling (minimal)
+        - Constitutional check (jurisdiction): <1–2 line verdict> [constitutional:<id>]
+        - Ethical stance note: <primary stance + key counter-stance> [ethical:<id>]
+
+    constraints:
+      - "Concise: include only the minimal set of premises/lemmas needed to derive the conclusion."
+      - "Traceable: every P/L/C cites at least one evidence code from the input JSONs or original text."
+      - "Walton schemes: each inference step names a scheme and addresses ≥1 CQ (briefly)."
+      - "No invention: if a needed item is missing, mark as GAP and optionally pose one precise query."
+      - "Output must be valid Markdown only (no JSON, YAML, schema keys, or code fences)."
+      - "Return only the human-readable synthesis."
+
+    checklist:
+      - "Canonical terms chosen; conflicting definitions resolved and noted."
+      - "Premises sufficient; lemmas necessary; no circularity."
+      - "Each link has a Walton scheme + ≥1 CQ answered."
+      - "Jurisdiction/time alignment consistent."
+      - "Ethical stance articulated with one compact counter-stance."
+      - "Human-readable chain is complete and internally consistent."
+
+    run_instructions:
+      - "Provide ARG_TEXT."
+      - "Supply available inputs (paths or objects): assumptions, definitions, constitutional, ethical, schemes."
+      - "Optionally set jurisdiction, timebound, and terminology_preferences."
+      - "Execute procedure → produce the human_readable Markdown output."
+  message: |
+    Synthesize the following argument and all the information from the provided inputs
+    into a concise, logically valid, and rhetorically effective inference chain (P→L→C)
+    that integrates only the most relevant points, harmonizes terminology, and includes Walton
+    scheme annotations with critical questions.
+    Return only clean Markdown formatted for direct insertion into a report.
+    Argument:
+    {argument}
+    Definitions:
+    {definitions_json}
+    Assumptions:
+    {assumptions_json}
+    Constitutional Alignment:
+    {constitutional_alignment_json}
+    Ethical Stance:
+    {ethical_alignment_json}
+    Walton Schemes:
+    {schemes_json}
+  adapter: openai
+  settings:
+    model: gpt-5
+
+inputs:
+  argument: "&argument"
+  definitions_json: "$definition_harvester"
+  assumptions_json: "$assumption_harvester"
+  constitutional_alignment_json: "$constitutional_alignment_harvester"
+  ethical_alignment_json: "$ethical_stance_harvester"
+  schemes_json: "$walton_scheme_harvester"

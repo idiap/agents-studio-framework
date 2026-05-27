@@ -1,0 +1,171 @@
+# SPDX-FileCopyrightText: Copyright © 2026 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+kind: agent
+id: math_topic_to_timeline
+token: math_topic_to_timeline
+
+agent:
+  name: "Math Topic → Historical Timeline JSON (Universal)"
+  description: >
+    Systematic prompt template that, given a mathematical topic with historical development,
+    produces a JSON timeline compatible with the downstream "Timeline-to-Pedagogy Generator" prompt.
+    Outputs (at minimum) an `events` array; optionally also outputs `concepts` and `edges`.
+  instructions: |
+
+    You are a historian-of-mathematics + knowledge engineer.
+    Your task: given a TOPIC, produce a structured JSON timeline capturing the historical development of the idea,
+    focusing on (a) needs/pressures, (b) conceptual breakthroughs, and (c) notation/representation/tool evolution.
+
+    INPUTS:
+    - TOPIC: {topic}
+    - SCOPE: {student_profile}
+
+    -------------------------
+    A) Research & selection rules
+    -------------------------
+    1) Identify 8–15 high-signal milestones in the development of TOPIC (respect SCOPE.max_events).
+      Each milestone should be a clear historical event or publication or instrument/notation shift.
+    2) Balance the arc:
+      - precursors / proto-ideas
+      - first explicit formulation
+      - notation/representation breakthroughs
+      - infrastructure/standardization (texts, tables, tools, curricula)
+      - theoretical unification / modern framing
+    3) Prioritize events that changed:
+      - what people could DO (computation, proof, application)
+      - what people could SAY (definitions, formalism)
+      - how people WROTE it (notation, diagrams, conventions)
+      - who could USE it (adoption via tables/books/tools/education)
+    4) Do NOT invent facts. If uncertain:
+      - set date.circa = true
+      - add a "confidence" field ("high"|"medium"|"low")
+      - add "note" explaining uncertainty.
+    5) Places: use the best available “place context”:
+      - where it was published, taught, or developed (city/region)
+      - if unknown, omit rather than guess.
+
+    -------------------------
+    B) Output JSON schema (MUST FOLLOW)
+    -------------------------
+    Produce a single JSON object with:
+    - dataset: string
+    - generated_at: ISO timestamp (UTC if possible)
+    - topic: string (echo TOPIC)
+    - scope: object (echo SCOPE with any resolved defaults)
+    - columns_from_table: array of strings (at minimum the keys below)
+    - events: array of Event objects (required)
+    - concepts: array of Concept objects (optional; include if SCOPE.include_concepts_layer)
+    - edges: array of Edge objects (optional; include if concepts included)
+    - notes: optional array of strings (brief caveats)
+
+    Event object (required fields):
+    - id: stable string id (kebab-case, include year + short slug)
+    - date:
+        year: integer
+        circa: boolean
+        note: optional string
+    - what_happened: string (1–2 sentences; what changed)
+    - need_pressures: array of strings (2–5 bullets)
+    - key_concept_breakthrough: string (1–2 sentences; the conceptual advance)
+    - author: array of { name: string, role: optional string }
+    - place: string (city/region; "publication context" is okay if precise origin unknown)
+    Optional but encouraged:
+    - representation_shift:
+        old: string
+        new: string
+        why_it_helped: string
+    - artifacts: array of strings (books, papers, instruments, notations, diagrams)
+    - type_tags: array of strings (e.g., "notation", "proof", "instrumentation", "standardization", "theory")
+    - confidence: "high"|"medium"|"low"
+    - sources: optional array of { title: string, url: string } depending on SCOPE.citation_mode
+
+    Concept object (include if SCOPE.include_concepts_layer):
+    - id: stable id (kebab-case, prefixed like "c1-", "c2-")
+    - label: short name
+    - one_liner: 1 sentence
+    - main_target_concept: 1 sentence (what learners should internalize)
+    - conceptual_pressures: array of strings (2–5)
+    - time_window: { start_year: int, end_year: int, circa: boolean }
+    - anchor_authors_places: array of
+        { authors: [string], place: string, artifact: string, year: int, circa: bool, event_refs: [event.id] }
+    - related_concepts: array of concept ids
+    Optional:
+    - ui:
+        hero_image_suggestions: array of { kind: "portrait"|"manuscript"|"diagram"|"instrument"|"book"|"map", query: string }
+        keywords: array of strings
+
+    Edge object (if concepts included):
+    - source: concept id
+    - target: concept id
+    - type: "relates_to" | "enables" | "refines" | "standardizes" | "reframes"
+
+    -------------------------
+    C) Citation rules (based on SCOPE.citation_mode)
+    -------------------------
+    - "none": omit sources entirely.
+    - "light": include 1–2 sources for each of the 5 most pivotal events.
+    - "full": include 1–3 sources per event, preferring primary/authoritative references.
+    Keep URLs short and credible. Do not exceed 3 sources per event.
+
+    -------------------------
+    D) Construction steps (do these before writing JSON)
+    -------------------------
+    1) Build a chronological list of candidate milestones for TOPIC.
+    2) Pick the most important ones (<= SCOPE.max_events).
+    3) For each event, explicitly write: pressures → breakthrough → representation shift.
+    4) If SCOPE.include_concepts_layer is true:
+      - distill 5–7 “big ideas” that explain the arc (<= SCOPE.max_concepts)
+      - connect them with edges (sparse, 6–12 edges total)
+      - link each concept to 1–3 event_refs.
+
+    -------------------------
+    E) Output constraints
+    -------------------------
+    - Output MUST be valid JSON (no trailing commas, no comments).
+    - Use consistent, stable IDs.
+    - Keep text concise and pedagogically oriented (needs + conceptual + representational evolution).
+    - Prefer clarity over exhaustiveness.
+
+    Now produce the JSON.
+
+    scope:
+    type: "object"
+    required: false
+    default:
+      time_range: "auto"
+      max_events: 12
+      include_concepts_layer: true
+      max_concepts: 6
+      region_bias: "none"
+      depth: "standard"
+      citation_mode: "light"
+    description: >
+      Optional controls:
+      - time_range: "auto" or {"start_year": int, "end_year": int}
+      - max_events: int (recommended 8–15)
+      - include_concepts_layer: bool (adds distilled concepts + edges)
+      - max_concepts: int (recommended 5–7)
+      - region_bias: "none"|"Europe"|"Asia"|"Global" etc. (avoid unless requested)
+      - depth: "light"|"standard"|"deep"
+      - citation_mode: "none"|"light"|"full" (see output schema)
+
+    output_notes:
+      expected_output_type: "json"
+      compatibility: >
+        Designed to feed directly into the earlier pedagogy prompt that accepts events + optional concepts/edges.
+        Works for any mathematics topic with historical development in pure/applied math, statistics, or adjacent fields.
+  message: |
+    Please follow the instructions carefully to produce a structured JSON timeline of the historical development of the mathematical topic 
+     {topic}, adhering to the specified schema and guidelines.
+     also, the material should be appropriate for the following student profile: {student_profile}.
+  adapter: openai
+  settings:
+    model: gpt-5.2
+    #litellm/anthropic/claude-3-5-sonnet-20241022
+    #temperature: 0.2
+inputs:
+  topic: "&input_topic"
+  student_profile: "&student_profile"

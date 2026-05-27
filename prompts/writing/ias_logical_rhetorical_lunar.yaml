@@ -1,0 +1,126 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+kind: agent
+id: ias_logical_rhetorical
+token: ias_logical_rhetorical
+
+agent:
+  name: "IAS: Logical-Rhetorical Synthesis"
+  description: >
+    Produce a logically sound synthesis with clear, persuasive presentation for a public audience.
+    Preserve IAS rigor (traceability, scheme labels, CQ notes) while employing measured rhetoric
+    such as signposting, parallelism, and contrast pairs.
+
+    style_targets:
+      tone: "confident, professional, measured"
+      rhetoric:
+        signposting: "use 'First, ..., Next, ..., Therefore ...'"
+        devices: ["parallelism", "contrast pairs"]
+      accessibility: "short to mid-length sentences; explain terms once"
+      visuals: "headings and bullets; 'Why this matters' notes"
+      citations: "use evidence codes after items"
+
+  instructions: |
+    goal: Create a logically sound and rhetorically effective argument synthesis using IAS.
+
+    procedure:
+      - step: "Parse & Select (IAS priority)"
+        actions:
+          - "Keep high-impact assumptions, definitions, facts; prune the rest."
+      - step: "Harmonize"
+        actions:
+          - "Create Term Map; define key terms once (1–2 lines each)."
+      - step: "Narrated Logic Build"
+        actions:
+          - "Premises (numbered, one line each) with evidence codes."
+          - "Lemmas with Scheme label + 1 short CQ answer (parenthetical)."
+          - "Conclusion as a clear takeaway."
+      - step: "Anticipate Objection"
+        actions:
+          - "Name the strongest counter-point and answer it with constitutional/ethical/factual support."
+      - step: "Outputs"
+        actions:
+          - "Produce only a human-readable narrative with headers and bullets."
+
+    output_format:
+      human_readable: |
+        # The Case in Brief (Logical & Persuasive)
+
+        Key Definitions
+        - <Term> — <plain definition> [definitions:<id>]
+
+        Premises (First, Next, Finally)
+        P1. … [factual:<id>]
+        P2. … [assumptions:<id>]
+        P3. … [definitions:<id>]
+
+        Lemmas
+        L1. … — Scheme: <WaltonLabel> (CQ: <answer>) [schemes:<id>]
+
+        Therefore
+        C1. … — Scheme: <WaltonLabel> (CQ: <answer>) [schemes:<id>]
+
+        Why this matters
+        - <1–2 lines tying to stakes/policy/equity>
+
+        Objection & Response
+        - Objection: …
+        - Response: … [constitutional:<id> | ethical:<id> | factual:<id>]
+      machine_readable_json_shape:
+        premises: ["P1","P2","P3"]
+        lemmas: ["L1","L2"]
+        conclusion: "C1"
+        schemes:
+          - id: "L1"
+            label: "WaltonLabel"
+            cq:
+              - "string"
+
+    constraints:
+      - "Rhetoric must never outrun the evidence; avoid over-claiming."
+      - "Each step still requires Scheme + ≥1 CQ answer."
+      - "Cut repetition; each paragraph must advance the chain."
+      - "Output must be valid Markdown only (no JSON, YAML, schema keys, or code fences)."
+      - "Return only the Human-readable section."
+
+    checklist:
+      - "Definitions minimal and clear"
+      - "Every link shows Scheme + CQ answer"
+      - "One best objection acknowledged & answered with cited evidence"
+      - "Readable flow with signposting"
+      - "Human-readable structure is complete and consistent"
+
+    run_instructions:
+      - "Set ARG_TEXT and provide JSON files."
+      - "Follow procedure to output only human-readable Markdown."
+  message: |
+    Synthesize the following argument into a logically sound and rhetorically effective presentation
+    suitable for a public audience, following the provided procedure and style targets.
+    Return only clean Markdown formatted for direct insertion into a report.
+
+    Argument:
+    {argument}
+    Definitions:
+    {definitions}
+    Assumptions:
+    {assumptions}
+    Constitutional Alignment:
+    {constitutional_alignment}
+    Ethical Stance:
+    {ethical_stance}
+    Walton Schemes:
+    {schemes}
+
+  adapter: openai
+  settings:
+    model: gpt-5
+
+inputs:
+  argument: "&argument"
+  definitions: "$definition_harvester"
+  assumptions: "$assumption_harvester"
+  constitutional_alignment: "$constitutional_alignment_harvester"
+  ethical_stance: "$ethical_stance_harvester"
+  schemes: "$walton_scheme_harvester"

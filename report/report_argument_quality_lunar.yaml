@@ -1,0 +1,22 @@
+# Copyright © 2026 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+kind: component
+id: argument_quality_auditor_report
+token: argument_quality_auditor_report
+
+component: report
+inputs:
+  title: "Rapport d'audit de la qualité des arguments"
+  template: |
+    # Synthèse de l'argument enrichi et son audit
+    Dans ce rapport, nous présentons une synthèse de l'argument enrichi ainsi qu'un audit de sa qualité, mettant en évidence les forces et les domaines d'amélioration.
+    ### Synthèse intégrée de l'argument
+    {synthesis}
+    ### Audit de la qualité de l'argument
+    {auditor}
+  synthesis: "$integrated_argument_synthesizer"
+  auditor: "$ias_argument_quality_auditor"
+

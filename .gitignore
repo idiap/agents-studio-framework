@@ -1,0 +1,87 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+# -------------------------
+# Python
+# -------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.pkl
+*.log
+
+# Byte-compiled / optimized / DLL files
+*.so
+*.dylib
+*.dll
+
+# Virtual environment directories
+venv/
+.env/
+.env.*/
+.venv/
+.venv*/
+
+# Conda environment directories (local)
+conda-env/
+*.conda
+*.spec
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# -------------------------
+# Environment / Secrets
+# -------------------------
+.env
+*.env
+*.dotenv
+
+# -------------------------
+# Common project ignores
+# -------------------------
+dist/
+build/
+site/
+htmlcov/
+coverage.xml
+*.cover
+*.py,cover
+.cache/
+.mypy_cache/
+.pytest_cache/
+coverage/
+
+# -------------------------
+# Editors / IDEs
+# -------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# -------------------------
+# OS files
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# Node / Frontend (optional)
+# -------------------------
+node_modules/
+
+## folders to ignore
+outputs/
+logs/
+results/
+header_manager/
+
+/lunar_api.db
+.env.docker
+.env
+

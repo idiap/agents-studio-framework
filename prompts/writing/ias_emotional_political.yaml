@@ -1,0 +1,97 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+name: "IAS: Emotional-Political Synthesis"
+version: "1.0"
+description: >
+  Craft an argument that openly adopts a political stance and uses emotional appeal,
+  while preserving a valid P→L→C chain, Walton scheme labels, CQ answers, and IAS traceability.
+
+style_targets:
+  tone: "forceful, value-forward, partisan framing (explicitly disclosed)"
+  emotional_tools: ["framing metaphors", "stakes/urgency", "in-group values", "moral contrast", "anaphora"]
+  safeguards: "no fabrication, no demeaning language, no unsafe calls; keep claims evidence-linked"
+
+inputs:
+  ARG_TEXT: "<<paste original argument>>"
+  files:
+    assumptions: "assumptions.json # optional"
+    definitions: "definitions.json # optional"
+    constitutional: "constitutional.json # optional"
+    ethical: "ethical.json # optional"
+    factual: "factual.json # optional"
+    schemes: "schemes.json # optional"
+
+procedure:
+  - step: "Declare Stance & Stakes"
+    actions:
+      - "State prioritized values from ethical JSON and what is at risk (2–3 sentences)."
+  - step: "Harmonize Core Terms (brief)"
+    actions:
+      - "Give one-line definitions for 2–4 essential terms; show Term Map inline."
+  - step: "Drive the Chain"
+    actions:
+      - "Premises (P#): punchy, value-linked; add evidence codes."
+      - "Lemmas (L#): name Scheme + 1 CQ answer; keep sentences crisp."
+      - "Conclusion: rallying statement grounded in lemmas."
+  - step: "Contrast Block ('What the other side ignores')"
+    actions:
+      - "List 2–3 bullets referencing opposing assumptions/evidence (with file codes)."
+  - step: "Call to Action"
+    actions:
+      - "1–2 lawful, general lines consistent with the conclusion."
+  - step: "Attach JSON"
+    actions:
+      - "Provide IAS-shaped JSON for auditability."
+
+output_format:
+  human_readable: |
+    # We Choose <Value> (Emotional & Framed)
+
+    Core Terms
+    - <Term> — <one-line definition> [definitions:<id>]
+
+    Premises
+    P1. … [ethical:<id> | factual:<id>]
+    P2. … [assumptions:<id>]
+    P3. … [definitions:<id>]
+
+    Lemmas
+    L1. … — Scheme: <WaltonLabel> (CQ: <answer>) [schemes:<id>]
+
+    Conclusion
+    C1. … — Scheme: <WaltonLabel> (CQ: <answer>) [schemes:<id>]
+
+    What the other side ignores
+    - … [assumptions:<id> | factual:<id> | constitutional:<id>]
+
+    Call to action
+    - …
+
+  machine_readable_json_shape:
+    stance: "string"
+    values: ["string"]
+    premises: ["P1","P2","P3"]
+    lemmas:
+      - id: "L1"
+        scheme: "WaltonLabel"
+        cq_answer: "string"
+    conclusion: "C1"
+
+constraints:
+  - "Use emotive framing, but keep claims evidence-linked and accurate."
+  - "No demeaning language; no incitement; explicit disclosure of stance."
+  - "Maintain IAS linkage: Scheme + ≥1 CQ for each inference."
+
+checklist:
+  - "Stance stated; values trace to ethical JSON"
+  - "Emotional elements present but claims remain evidence-linked"
+  - "Each link has Scheme + CQ answer"
+  - "Contrast block cites real opposing assumptions/evidence"
+  - "JSON consistent with text"
+
+run_instructions:
+  - "Set ARG_TEXT and supply JSON files."
+  - "Follow procedure; output both formats."

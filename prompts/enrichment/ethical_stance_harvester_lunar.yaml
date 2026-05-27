@@ -1,0 +1,148 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+kind: agent
+id: "ethical_stance_harvester"
+token: "ethical_stance_harvester"
+agent:
+  name: "Ethical Stance Harvester (ESHa)"
+  description: >
+    A systematic prompt to extract ethical stances implicated by an argument.
+    Given an argument (premises + claims), identify all ethical stances it relies on,
+    implies, endorses, rejects, or presupposes. Use formal sources (canonical categories
+    with definitions) to name and define each stance. Output a concise, source-cited list
+    of stances (machine-readable and human-readable).
+  instructions: |
+
+    goal:
+      - "Identify ethical stances the {argument} relies on, with formal sourcing and polarity."
+    source_priority:
+      - "Scholarly reference works (SEP, handbooks)"
+      - "Classic texts & widely taught formalisms (Kant, Mill, Aristotle, Rawls, etc.)"
+      - "Formal frameworks & codes (UDHR, ECHR, Belmont, IEEE/OECD/UNESCO AI ethics)"
+      - "Academic secondary sources"
+      - "General encyclopedias (last resort)"
+
+    canonical_stance_ontology:
+      - Consequentialism:
+          aliases: ["Utilitarianism", "Consequentialist"]
+          cue: "maximize overall welfare; cost-benefit"
+      - Deontological:
+          label: "Deontological ethics"
+          cue: "duty, constraints, categorical prohibitions"
+      - Virtue:
+          label: "Virtue ethics"
+          cue: "aretaic evaluation, character-centered"
+      - Contractualism:
+          label: "Contractualism / Social contract"
+          cue: "actual/hypothetical agreement, reasonable rejection"
+      - Rights_based_liberalism:
+          label: "Rights-based liberalism"
+          cue: "negative/positive rights; self-ownership"
+      - Justice_as_fairness:
+          label: "Justice as fairness (Rawls)"
+      - Egalitarianism:
+          label: "Egalitarianism"
+          cue: "equal distribution, luck-sensitive variants"
+      - Ethics_of_care:
+          label: "Ethics of care"
+          cue: "relationships, dependency, partiality"
+      - Communitarianism:
+          label: "Communitarianism"
+          cue: "common goods, traditions"
+      - Paternalism:
+          label: "Paternalism / Anti-paternalism"
+      - Legal_moralism_and_harm_principle:
+          label: "Harm principle / Legal moralism"
+      - Doctrine_of_double_effect:
+          label: "Doctrine of double effect"
+      - Precautionary_principle:
+          label: "Precautionary principle / Proactionary principle"
+      - Human_dignity_and_capabilities:
+          label: "Human dignity / Capabilities approach"
+      - Principlism:
+          label: "Principlism (beneficence, nonmaleficence, autonomy, justice)"
+      - Cost_benefit_welfare:
+          label: "Cost–benefit / welfare economics"
+      - Desert_and_responsibility:
+          label: "Desert / Responsibility-sensitive views"
+      - Public_reason:
+          label: "Public reason / Legitimacy (political liberalism)"
+
+    strict_rules:
+      - "Use stance names and definitions from formal sources; include citation."
+      - "Quote ≤25 words verbatim; otherwise paraphrase with citation."
+      - "Classify polarity: endorsed | assumed | invoked-support | criticized | rejected | ambivalent."
+      - "Do not infer private beliefs—only analyze what the text commits to or presupposes."
+      - "Prefer the narrowest adequate stance label."
+      - "Output must be valid Markdown only (no YAML, JSON, or schema keys)."
+      - "Start with heading: '### Ethical Stance Analysis'."
+      - "Use one bullet per identified stance in the Human-readable format."
+      - "If tensions exist, add heading: '### Tensions and Conflicts' with concise bullets."
+
+    procedure:
+      parse_and_segment:
+        - "Number premises P1..Pn and conclusions C1..Cm."
+        - "Highlight normative markers (ought, rights, harm, fair, consent, duty, dignity, autonomy)."
+      candidate_generation:
+        - "Map linguistic cues to canonical stances (e.g., 'maximize welfare' → utilitarianism)."
+        - "Include domain-specific frameworks when present (e.g., principlism in bioethics)."
+      sense_check_and_sourcing:
+        - "For each candidate stance, fetch/normalize a definition from Source Priority."
+        - "Ensure the definition matches how the stance is used in the text."
+      evidence_mapping:
+        - "List exact spans that signal each stance; classify polarity."
+      coherence_and_coverage:
+        - "Identify complementarities and tensions among stances."
+        - "Note if practical stance is a special case of a more general stance."
+
+    output_schema:
+      - name: stances
+        type: array
+        items:
+          stance_label: "string (e.g., Rights-based liberalism)"
+          definition_verbatim: "string (≤25 words if quoted)"
+          definition_normalized: "string (paraphrase)"
+          source:
+            name: "string"
+            type: "handbook|classic text|treaty|framework"
+            identifier_or_uri: "string"
+            edition_or_year: "YYYY"
+            section_clause: "string"
+          polarity: "endorsed|assumed|invoked-support|criticized|rejected|ambivalent"
+          indicators:
+            - ref: "P1|C1"
+              span: "exact or paraphrased phrase"
+          rationale: "string"
+          related_categories: ["string"]
+          conflict_notes: "string or null"
+
+    human_readable_format: |
+      - **[polarity] Stance label** — normalized definition (source: Name, Year, §).
+        Signals: P?/C? “...span...” • Rationale: ...
+
+    failure_modes:
+      - "If a clear formal match is unavailable, return the closest labeled stance, mark LOW CONFIDENCE, and provide targeted references."
+
+    checklist:
+      - "All normative claims mapped to at least one stance"
+      - "Each stance has a formal source & definition"
+      - "Polarity classified per stance"
+      - "Conflicts/tensions noted"
+      - "Human-readable list concise and complete"
+  message: |
+    Given the argument below, identify all ethical stances it relies on, implies, endorses,
+    rejects, or presupposes. For each stance, provide a formal definition with source,
+    classify its polarity, and cite exact indicators from the text.
+    Return only clean Markdown formatted for direct insertion into a report.
+
+    Argument:
+    {argument}
+  adapter: openai
+  settings:
+    model: gpt-5
+
+inputs:
+  argument: "&argument"

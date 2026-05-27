@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+kind: component
+id: thesis_enriched_report
+token: thesis_enriched_report
+
+component: report
+inputs:
+  title: "Rapport d'argument enrichi de thèse"
+  template: |
+    # Rapport d'argument enrichi de thèse
+    Ce rapport présente des arguments structurés pour et contre la thèse, suivi d'une brève synthèse.
+
+    {synthesis}
+  synthesis: "$argumentation_developer"

@@ -1,0 +1,78 @@
+# SPDX-FileCopyrightText: Copyright © 2025 Idiap Research Institute <contact@idiap.ch>
+# SPDX-FileContributor: Imen Ben Mahmoud <imen.benmahmoud@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+argument_1: | 
+  Legality of prostitution
+  Pro position (steel-man): 
+  Thesis: Prostitution should be legal and regulated.
+  Best premises
+  P1. Legalization enables labor, health, and safety standards (screening, contracts, workplace inspections), reducing harm.
+  P2. Regulation + policing can better target coercion/trafficking than blanket bans that push markets underground.
+  P3. Adults bodily autonomy supports consensual transactions absent coercion or exploitation.
+
+
+  Con position (steel-man)
+  Thesis: Prostitution should be criminalized (or the “Nordic model” with demand-side criminalization).
+  Best premises
+  P1. Markets in sex risk structural exploitation and commodification incompatible with equal respect and gender equality.
+  P2. Legal frameworks struggle to separate coercion from consent in practice; legalization can expand demand and trafficking supply.
+  P3. Criminalizing purchase (not the seller) plus strong social support can reduce demand and harms.
+
+
+  Simple version (one-sided)
+  Claim (C): Prostitution should be legal and regulated.
+  Premise (P): Regulation reduces harm and enables enforcement against coercion.
+argument_2: |
+  Con position 
+  Thesis: Taxation is not theft.
+  Best premises
+  P1. Theft requires unlawfulness and lack of rightful authority; taxes are enacted by due process.
+  P2. Taxes fund non-excludable public goods; benefits/reciprocity provide indirect quid-pro-quo.
+  P3. Democratic authorization, fairness principles, and proportionality tests supply legitimacy.
+    Inference: Because lawful authority + proportionality + reciprocity hold, theft conditions are not met → ¬C.
+  Pro position 
+  Thesis: Taxation is institutionalized theft.
+  Best premises
+     P1. Taxes are compulsory extractions of privately owned income/wealth.
+     P2. Consent is not individualized or contemporaneous; refusal triggers penalties.
+     P3. Taking property without consent is theft regardless of who does it.
+  Simple version (one-sided)
+  Claim (C): Countries are stealing from their inhabitants.
+  Premise (P): Countries levy taxes from their inhabitants.
+
+argument_3: |
+  1) Increasing military spend in Switzerland (CH)
+  Pro position (steel-man)
+  Thesis: Switzerland should increase military spending.
+  Best premises
+  P1. The threat landscape (cyber, hybrid, drones, long-range strikes) has intensified in Europe; credible deterrence/readiness requires modernization.
+  P2. The Confederation has a constitutional duty to safeguard independence and security; the militia model still needs well-equipped active components and stockpiles.
+  P3. Under-investment creates capability gaps (air defense, cyber, logistics, munitions) that cannot be closed quickly in crisis.
+  Inference: From P1–P3, raising spending is a necessary means to fulfill defense obligations and restore deterrence → C.
+  Strengths
+  Directly links capabilities to deterrence and constitutional security tasks.
+
+
+  Anticipates supply-chain lead times, arguing for front-loading.
+
+
+  Key vulnerabilities
+  Opportunity costs (education/health/energy resilience).
+
+
+  Risk of inefficient procurement or misallocation without reform.
+
+
+  Con position (steel-man)
+  Thesis: Switzerland should not increase military spending (or should reallocate within current levels).
+  Best premises
+  P1. As a neutral, non-NATO state with low invasion risk, Switzerland benefits more from civil protection, cyber-resilience, and diplomacy than kinetic escalation.
+  P2. Marginal francs yield higher public safety returns in infrastructure hardening (grids, tunnels, hospitals) than in costly platforms.
+  P3. Procurement reforms and efficiency gains can close critical gaps within the existing envelope.
+
+
+  Simple version (one-sided)
+  Claim (C): Switzerland should increase military spending.
+  Premise (P): Europe’s threat environment has worsened and Switzerland has capability gaps.

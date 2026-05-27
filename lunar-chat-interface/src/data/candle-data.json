@@ -1,0 +1,1410 @@
+{
+  "2025": {
+    "us_equity_large_cap": {
+      "Min": 3.93,
+      "25th": 5.91,
+      "50th": 6.36,
+      "75th": 6.83,
+      "Max": 8.0
+    },
+    "us_equity_small_mid_cap": {
+      "Min": 4.13,
+      "25th": 6.25,
+      "50th": 6.91,
+      "75th": 7.31,
+      "Max": 8.52
+    },
+    "non_us_equity_developed": {
+      "Min": 4.09,
+      "25th": 6.39,
+      "50th": 7.09,
+      "75th": 7.61,
+      "Max": 8.32
+    },
+    "non_us_equity_emerging": {
+      "Min": 4.4,
+      "25th": 6.5,
+      "50th": 7.38,
+      "75th": 7.98,
+      "Max": 9.0
+    },
+    "us_corporate_bonds_core": {
+      "Min": 3.16,
+      "25th": 4.76,
+      "50th": 5.07,
+      "75th": 5.28,
+      "Max": 5.64
+    },
+    "us_corporate_bonds_long_duration": {
+      "Min": 2.6,
+      "25th": 4.6,
+      "50th": 5.27,
+      "75th": 5.42,
+      "Max": 6.11
+    },
+    "us_corporate_bonds_high_yield": {
+      "Min": 3.94,
+      "25th": 5.6,
+      "50th": 5.92,
+      "75th": 6.21,
+      "Max": 7.19
+    },
+    "non_us_debt_developed": {
+      "Min": 1.65,
+      "25th": 3.37,
+      "50th": 3.92,
+      "75th": 4.31,
+      "Max": 5.35
+    },
+    "non_us_debt_emerging": {
+      "Min": 3.97,
+      "25th": 5.56,
+      "50th": 6.09,
+      "75th": 6.49,
+      "Max": 8.0
+    },
+    "us_treasuries_cash_equivalents": {
+      "Min": 2.2,
+      "25th": 3.39,
+      "50th": 3.61,
+      "75th": 3.77,
+      "Max": 4.45
+    },
+    "tips_inflation_protected": {
+      "Min": 2.2,
+      "25th": 4.0,
+      "50th": 4.4,
+      "75th": 4.8,
+      "Max": 6.0
+    },
+    "real_estate": {
+      "Min": 3.63,
+      "25th": 5.44,
+      "50th": 6.16,
+      "75th": 6.91,
+      "Max": 8.0
+    },
+    "hedge_funds": {
+      "Min": 3.05,
+      "25th": 5.45,
+      "50th": 5.96,
+      "75th": 6.65,
+      "Max": 7.33
+    },
+    "commodities": {
+      "Min": 2.25,
+      "25th": 3.8,
+      "50th": 4.63,
+      "75th": 5.32,
+      "Max": 7.0
+    },
+    "infrastructure": {
+      "Min": 4.39,
+      "25th": 6.49,
+      "50th": 7.13,
+      "75th": 7.98,
+      "Max": 8.92
+    },
+    "private_equity": {
+      "Min": 6.0,
+      "25th": 8.07,
+      "50th": 9.14,
+      "75th": 9.92,
+      "Max": 11.5
+    },
+    "private_debt": {
+      "Min": 5.0,
+      "25th": 7.09,
+      "50th": 8.01,
+      "75th": 8.55,
+      "Max": 10.0
+    },
+    "inflation": {
+      "Min": 1.8,
+      "25th": 2.2,
+      "50th": 2.4,
+      "75th": 2.55,
+      "Max": 3.0
+    }
+  },
+  "2024": {
+    "us_equity_large_cap": {
+      "Min": 4.1,
+      "25th": 5.5,
+      "50th": 6.6,
+      "75th": 7.2,
+      "Max": 10.2
+    },
+    "us_equity_small_mid_cap": {
+      "Min": 4.1,
+      "25th": 5.8,
+      "50th": 7.0,
+      "75th": 8.0,
+      "Max": 10.9
+    },
+    "non_us_equity_developed": {
+      "Min": 4.3,
+      "25th": 6.4,
+      "50th": 7.5,
+      "75th": 7.8,
+      "Max": 9.3
+    },
+    "non_us_equity_emerging": {
+      "Min": 3.4,
+      "25th": 7.1,
+      "50th": 7.8,
+      "75th": 8.6,
+      "Max": 9.9
+    },
+    "us_corporate_bonds_core": {
+      "Min": 3.8,
+      "25th": 4.5,
+      "50th": 4.9,
+      "75th": 5.2,
+      "Max": 6.0
+    },
+    "us_corporate_bonds_long_duration": {
+      "Min": 2.4,
+      "25th": 4.6,
+      "50th": 5.0,
+      "75th": 5.5,
+      "Max": 6.6
+    },
+    "us_corporate_bonds_high_yield": {
+      "Min": 5.0,
+      "25th": 5.6,
+      "50th": 6.1,
+      "75th": 6.5,
+      "Max": 7.5
+    },
+    "non_us_debt_developed": {
+      "Min": 1.8,
+      "25th": 2.9,
+      "50th": 3.6,
+      "75th": 4.4,
+      "Max": 6.3
+    },
+    "non_us_debt_emerging": {
+      "Min": 2.9,
+      "25th": 5.9,
+      "50th": 6.3,
+      "75th": 6.7,
+      "Max": 8.7
+    },
+    "us_treasuries_cash_equivalents": {
+      "Min": 2.6,
+      "25th": 3.2,
+      "50th": 3.5,
+      "75th": 4.0,
+      "Max": 5.5
+    },
+    "tips_inflation_protected": {
+      "Min": 3.7,
+      "25th": 4.2,
+      "50th": 4.3,
+      "75th": 4.6,
+      "Max": 5.5
+    },
+    "real_estate": {
+      "Min": 2.8,
+      "25th": 5.6,
+      "50th": 6.0,
+      "75th": 6.5,
+      "Max": 8.6
+    },
+    "hedge_funds": {
+      "Min": 4.3,
+      "25th": 5.3,
+      "50th": 6.0,
+      "75th": 6.3,
+      "Max": 8.4
+    },
+    "commodities": {
+      "Min": 2.2,
+      "25th": 3.9,
+      "50th": 4.6,
+      "75th": 5.8,
+      "Max": 8.6
+    },
+    "infrastructure": {
+      "Min": 5.7,
+      "25th": 6.5,
+      "50th": 7.2,
+      "75th": 7.8,
+      "Max": 9.6
+    },
+    "private_equity": {
+      "Min": 5.4,
+      "25th": 8.6,
+      "50th": 9.0,
+      "75th": 9.8,
+      "Max": 11.4
+    },
+    "private_debt": {
+      "Min": 7.2,
+      "25th": 7.7,
+      "50th": 8.3,
+      "75th": 8.6,
+      "Max": 11.3
+    },
+    "inflation": {
+      "Min": 2.0,
+      "25th": 2.3,
+      "50th": 2.4,
+      "75th": 2.5,
+      "Max": 3.0
+    }
+  },
+  "2023": {
+    "us_equity_large_cap": {
+      "Min": 3.7,
+      "25th": 6.3,
+      "50th": 6.8,
+      "75th": 7.7,
+      "Max": 10.0
+    },
+    "us_equity_small_mid_cap": {
+      "Min": 3.9,
+      "25th": 6.7,
+      "50th": 7.4,
+      "75th": 8.5,
+      "Max": 12.2
+    },
+    "non_us_equity_developed": {
+      "Min": 3.7,
+      "25th": 7.1,
+      "50th": 7.7,
+      "75th": 8.4,
+      "Max": 10.5
+    },
+    "non_us_equity_emerging": {
+      "Min": 4.3,
+      "25th": 7.6,
+      "50th": 8.3,
+      "75th": 9.2,
+      "Max": 12.6
+    },
+    "us_corporate_bonds_core": {
+      "Min": 2.6,
+      "25th": 4.2,
+      "50th": 4.7,
+      "75th": 5.3,
+      "Max": 6.1
+    },
+    "us_corporate_bonds_long_duration": {
+      "Min": 2.6,
+      "25th": 4.0,
+      "50th": 4.8,
+      "75th": 5.5,
+      "Max": 7.3
+    },
+    "us_corporate_bonds_high_yield": {
+      "Min": 3.7,
+      "25th": 5.7,
+      "50th": 6.4,
+      "75th": 7.2,
+      "Max": 8.8
+    },
+    "non_us_debt_developed": {
+      "Min": 1.5,
+      "25th": 2.9,
+      "50th": 3.5,
+      "75th": 3.9,
+      "Max": 5.8
+    },
+    "non_us_debt_emerging": {
+      "Min": 3.9,
+      "25th": 5.4,
+      "50th": 6.3,
+      "75th": 6.8,
+      "Max": 8.6
+    },
+    "us_treasuries_cash_equivalents": {
+      "Min": 2.0,
+      "25th": 3.0,
+      "50th": 3.3,
+      "75th": 3.5,
+      "Max": 5.2
+    },
+    "tips_inflation_protected": {
+      "Min": 2.1,
+      "25th": 3.6,
+      "50th": 4.1,
+      "75th": 4.6,
+      "Max": 5.6
+    },
+    "real_estate": {
+      "Min": 3.5,
+      "25th": 5.0,
+      "50th": 5.8,
+      "75th": 6.7,
+      "Max": 8.8
+    },
+    "hedge_funds": {
+      "Min": 3.0,
+      "25th": 5.3,
+      "50th": 6.1,
+      "75th": 6.7,
+      "Max": 8.5
+    },
+    "commodities": {
+      "Min": 2.3,
+      "25th": 4.0,
+      "50th": 5.0,
+      "75th": 6.0,
+      "Max": 8.9
+    },
+    "infrastructure": {
+      "Min": 3.6,
+      "25th": 6.2,
+      "50th": 7.2,
+      "75th": 8.2,
+      "Max": 10.5
+    },
+    "private_equity": {
+      "Min": 6.7,
+      "25th": 8.9,
+      "50th": 9.6,
+      "75th": 10.5,
+      "Max": 12.8
+    },
+    "private_debt": {
+      "Min": 4.8,
+      "25th": 7.5,
+      "50th": 8.4,
+      "75th": 9.2,
+      "Max": 11.2
+    },
+    "inflation": {
+      "Min": 1.9,
+      "25th": 2.3,
+      "50th": 2.5,
+      "75th": 2.7,
+      "Max": 3.3
+    }
+  },
+  "2022": {
+    "us_equity_large_cap": {
+      "Min": 4.66,
+      "25th": 5.45,
+      "50th": 5.9,
+      "75th": 6.15,
+      "Max": 7.5
+    },
+    "us_equity_small_mid_cap": {
+      "Min": 4.96,
+      "25th": 6.12,
+      "50th": 6.6,
+      "75th": 6.88,
+      "Max": 8.0
+    },
+    "non_us_equity_developed": {
+      "Min": 4.92,
+      "25th": 6.0,
+      "50th": 6.5,
+      "75th": 6.8,
+      "Max": 8.0
+    },
+    "non_us_equity_emerging": {
+      "Min": 5.5,
+      "25th": 6.58,
+      "50th": 7.14,
+      "75th": 7.76,
+      "Max": 8.5
+    },
+    "us_corporate_bonds_core": {
+      "Min": 1.5,
+      "25th": 2.2,
+      "50th": 2.75,
+      "75th": 3.13,
+      "Max": 4.0
+    },
+    "us_corporate_bonds_long_duration": {
+      "Min": 1.5,
+      "25th": 2.1,
+      "50th": 2.6,
+      "75th": 3.08,
+      "Max": 4.2
+    },
+    "us_corporate_bonds_high_yield": {
+      "Min": 2.87,
+      "25th": 3.56,
+      "50th": 4.0,
+      "75th": 4.43,
+      "Max": 6.0
+    },
+    "non_us_debt_developed": {
+      "Min": 1.0,
+      "25th": 1.49,
+      "50th": 1.84,
+      "75th": 2.21,
+      "Max": 3.32
+    },
+    "non_us_debt_emerging": {
+      "Min": 3.38,
+      "25th": 4.33,
+      "50th": 4.7,
+      "75th": 5.17,
+      "Max": 6.2
+    },
+    "us_treasuries_cash_equivalents": {
+      "Min": 1.0,
+      "25th": 1.27,
+      "50th": 1.5,
+      "75th": 1.75,
+      "Max": 2.5
+    },
+    "tips_inflation_protected": {
+      "Min": 1.19,
+      "25th": 1.58,
+      "50th": 2.02,
+      "75th": 2.4,
+      "Max": 3.81
+    },
+    "real_estate": {
+      "Min": 3.34,
+      "25th": 4.7,
+      "50th": 5.25,
+      "75th": 5.75,
+      "Max": 7.0
+    },
+    "hedge_funds": {
+      "Min": 2.9,
+      "25th": 3.97,
+      "50th": 4.77,
+      "75th": 5.4,
+      "Max": 6.7
+    },
+    "commodities": {
+      "Min": 1.36,
+      "25th": 2.77,
+      "50th": 3.5,
+      "75th": 4.64,
+      "Max": 7.0
+    },
+    "infrastructure": {
+      "Min": 4.2,
+      "25th": 5.52,
+      "50th": 6.38,
+      "75th": 7.12,
+      "Max": 8.5
+    },
+    "private_equity": {
+      "Min": 7.0,
+      "25th": 8.1,
+      "50th": 9.25,
+      "75th": 10.4,
+      "Max": 11.27
+    },
+    "private_debt": {
+      "Min": 4.8,
+      "25th": 6.15,
+      "50th": 6.87,
+      "75th": 7.58,
+      "Max": 8.62
+    },
+    "inflation": {
+      "Min": 1.64,
+      "25th": 2.29,
+      "50th": 2.51,
+      "75th": 2.84,
+      "Max": 3.35
+    }
+  },
+  "2021": {
+    "us_equity_large_cap": {
+      "Min": 3.48,
+      "25th": 4.9,
+      "50th": 5.78,
+      "75th": 6.46,
+      "Max": 8.54
+    },
+    "us_equity_small_mid_cap": {
+      "Min": 3.92,
+      "25th": 5.36,
+      "50th": 6.32,
+      "75th": 7.3,
+      "Max": 10.34
+    },
+    "non_us_equity_developed": {
+      "Min": 2.95,
+      "25th": 5.14,
+      "50th": 6.14,
+      "75th": 7.25,
+      "Max": 9.99
+    },
+    "non_us_equity_emerging": {
+      "Min": 3.83,
+      "25th": 6.07,
+      "50th": 7.08,
+      "75th": 8.15,
+      "Max": 12.94
+    },
+    "us_corporate_bonds_core": {
+      "Min": -0.11,
+      "25th": 1.37,
+      "50th": 2.08,
+      "75th": 2.58,
+      "Max": 3.77
+    },
+    "us_corporate_bonds_long_duration": {
+      "Min": -1.77,
+      "25th": 1.4,
+      "50th": 2.17,
+      "75th": 3.1,
+      "Max": 6.69
+    },
+    "us_corporate_bonds_high_yield": {
+      "Min": 1.94,
+      "25th": 3.13,
+      "50th": 3.87,
+      "75th": 4.68,
+      "Max": 7.07
+    },
+    "non_us_debt_developed": {
+      "Min": -0.98,
+      "25th": 0.89,
+      "50th": 1.4,
+      "75th": 2.16,
+      "Max": 5.66
+    },
+    "non_us_debt_emerging": {
+      "Min": 1.69,
+      "25th": 3.41,
+      "50th": 4.29,
+      "75th": 5.41,
+      "Max": 9.65
+    },
+    "us_treasuries_cash_equivalents": {
+      "Min": 0.21,
+      "25th": 0.82,
+      "50th": 1.12,
+      "75th": 1.44,
+      "Max": 2.6
+    },
+    "tips_inflation_protected": {
+      "Min": 0.44,
+      "25th": 1.45,
+      "50th": 1.63,
+      "75th": 1.81,
+      "Max": 2.5
+    },
+    "real_estate": {
+      "Min": 2.07,
+      "25th": 4.52,
+      "50th": 5.58,
+      "75th": 6.34,
+      "Max": 9.46
+    },
+    "hedge_funds": {
+      "Min": 1.86,
+      "25th": 3.55,
+      "50th": 4.37,
+      "75th": 5.11,
+      "Max": 7.52
+    },
+    "commodities": {
+      "Min": -0.21,
+      "25th": 1.65,
+      "50th": 2.93,
+      "75th": 3.97,
+      "Max": 8.99
+    },
+    "infrastructure": {
+      "Min": 2.96,
+      "25th": 5.34,
+      "50th": 6.2,
+      "75th": 6.82,
+      "Max": 9.47
+    },
+    "private_equity": {
+      "Min": 3.42,
+      "25th": 7.83,
+      "50th": 8.84,
+      "75th": 10.02,
+      "Max": 17.41
+    },
+    "private_debt": {
+      "Min": 2.15,
+      "25th": 5.94,
+      "50th": 6.4,
+      "75th": 7.03,
+      "Max": 11.51
+    },
+    "inflation": {
+      "Min": 1.7,
+      "25th": 2.03,
+      "50th": 2.12,
+      "75th": 2.31,
+      "Max": 2.42
+    }
+  },
+  "2020": {
+    "us_equity_large_cap": {
+      "Min": 3.9,
+      "25th": 5.8,
+      "50th": 6.13,
+      "75th": 6.83,
+      "Max": 8.0
+    },
+    "us_equity_small_mid_cap": {
+      "Min": 4.2,
+      "25th": 6.1,
+      "50th": 6.72,
+      "75th": 7.36,
+      "Max": 9.0
+    },
+    "non_us_equity_developed": {
+      "Min": 3.6,
+      "25th": 5.85,
+      "50th": 6.45,
+      "75th": 7.1,
+      "Max": 8.25
+    },
+    "non_us_equity_emerging": {
+      "Min": 4.0,
+      "25th": 6.22,
+      "50th": 7.4,
+      "75th": 8.5,
+      "Max": 10.0
+    },
+    "us_corporate_bonds_core": {
+      "Min": 1.4,
+      "25th": 2.2,
+      "50th": 2.65,
+      "75th": 2.88,
+      "Max": 3.9
+    },
+    "us_corporate_bonds_long_duration": {
+      "Min": 0.6,
+      "25th": 1.95,
+      "50th": 2.48,
+      "75th": 2.98,
+      "Max": 3.5
+    },
+    "us_corporate_bonds_high_yield": {
+      "Min": 2.9,
+      "25th": 4.0,
+      "50th": 4.63,
+      "75th": 5.3,
+      "Max": 6.4
+    },
+    "non_us_debt_developed": {
+      "Min": -1.0,
+      "25th": 0.5,
+      "50th": 1.4,
+      "75th": 1.93,
+      "Max": 3.9
+    },
+    "non_us_debt_emerging": {
+      "Min": 2.2,
+      "25th": 4.0,
+      "50th": 5.0,
+      "75th": 6.0,
+      "Max": 7.75
+    },
+    "us_treasuries_cash_equivalents": {
+      "Min": 0.1,
+      "25th": 1.1,
+      "50th": 1.68,
+      "75th": 1.93,
+      "Max": 2.8
+    },
+    "tips_inflation_protected": {
+      "Min": 0.4,
+      "25th": 1.3,
+      "50th": 2.0,
+      "75th": 2.43,
+      "Max": 3.3
+    },
+    "real_estate": {
+      "Min": 2.6,
+      "25th": 5.13,
+      "50th": 5.88,
+      "75th": 6.33,
+      "Max": 7.88
+    },
+    "hedge_funds": {
+      "Min": 2.55,
+      "25th": 3.7,
+      "50th": 4.8,
+      "75th": 5.38,
+      "Max": 7.0
+    },
+    "commodities": {
+      "Min": 0.8,
+      "25th": 2.0,
+      "50th": 3.0,
+      "75th": 3.7,
+      "Max": 6.1
+    },
+    "infrastructure": {
+      "Min": 4.1,
+      "25th": 6.1,
+      "50th": 6.9,
+      "75th": 7.35,
+      "Max": 8.5
+    },
+    "private_equity": {
+      "Min": 5.8,
+      "25th": 7.9,
+      "50th": 8.98,
+      "75th": 10.0,
+      "Max": 11.7
+    },
+    "private_debt": {
+      "Min": 4.8,
+      "25th": 6.75,
+      "50th": 7.88,
+      "75th": 8.3,
+      "Max": 9.6
+    },
+    "inflation": {
+      "Min": 1.3,
+      "25th": 1.8,
+      "50th": 2.0,
+      "75th": 2.2,
+      "Max": 2.7
+    }
+  },
+  "2019": {
+    "us_equity_large_cap": {
+      "Min": 3.95,
+      "25th": 5.41,
+      "50th": 5.96,
+      "75th": 6.76,
+      "Max": 8.59
+    },
+    "us_equity_small_mid_cap": {
+      "Min": 4.24,
+      "25th": 5.88,
+      "50th": 6.57,
+      "75th": 7.29,
+      "Max": 9.08
+    },
+    "non_us_equity_developed": {
+      "Min": 3.75,
+      "25th": 6.17,
+      "50th": 6.82,
+      "75th": 7.5,
+      "Max": 9.12
+    },
+    "non_us_equity_emerging": {
+      "Min": 4.46,
+      "25th": 6.9,
+      "50th": 7.58,
+      "75th": 8.17,
+      "Max": 10.32
+    },
+    "us_corporate_bonds_core": {
+      "Min": 2.0,
+      "25th": 3.24,
+      "50th": 3.46,
+      "75th": 3.81,
+      "Max": 5.25
+    },
+    "us_corporate_bonds_long_duration": {
+      "Min": 2.31,
+      "25th": 2.94,
+      "50th": 3.45,
+      "75th": 3.88,
+      "Max": 5.73
+    },
+    "us_corporate_bonds_high_yield": {
+      "Min": 3.0,
+      "25th": 4.35,
+      "50th": 5.09,
+      "75th": 5.44,
+      "Max": 6.92
+    },
+    "non_us_debt_developed": {
+      "Min": 0.84,
+      "25th": 2.0,
+      "50th": 2.38,
+      "75th": 3.1,
+      "Max": 4.68
+    },
+    "non_us_debt_emerging": {
+      "Min": 2.21,
+      "25th": 4.77,
+      "50th": 5.45,
+      "75th": 6.39,
+      "Max": 7.54
+    },
+    "us_treasuries_cash_equivalents": {
+      "Min": 1.0,
+      "25th": 2.4,
+      "50th": 2.75,
+      "75th": 3.13,
+      "Max": 4.59
+    },
+    "tips_inflation_protected": {
+      "Min": 1.0,
+      "25th": 2.4,
+      "50th": 2.73,
+      "75th": 3.39,
+      "Max": 4.95
+    },
+    "real_estate": {
+      "Min": 2.25,
+      "25th": 5.14,
+      "50th": 5.71,
+      "75th": 6.35,
+      "Max": 7.99
+    },
+    "hedge_funds": {
+      "Min": 2.2,
+      "25th": 4.82,
+      "50th": 5.21,
+      "75th": 5.72,
+      "Max": 8.16
+    },
+    "commodities": {
+      "Min": 1.19,
+      "25th": 2.97,
+      "50th": 3.89,
+      "75th": 4.7,
+      "Max": 6.97
+    },
+    "infrastructure": {
+      "Min": 4.22,
+      "25th": 6.02,
+      "50th": 6.85,
+      "75th": 7.49,
+      "Max": 9.15
+    },
+    "private_equity": {
+      "Min": 5.55,
+      "25th": 8.01,
+      "50th": 8.79,
+      "75th": 9.44,
+      "Max": 12.65
+    },
+    "private_debt": {
+      "Min": 4.62,
+      "25th": 6.25,
+      "50th": 7.29,
+      "75th": 7.92,
+      "Max": 10.23
+    },
+    "inflation": {
+      "Min": 1.85,
+      "25th": 2.05,
+      "50th": 2.21,
+      "75th": 2.38,
+      "Max": 2.53
+    }
+  },
+  "2018": {
+    "us_equity_large_cap": {
+      "Min": 2.4,
+      "25th": 5.5,
+      "50th": 6.3,
+      "75th": 6.8,
+      "Max": 7.5
+    },
+    "us_equity_small_mid_cap": {
+      "Min": 4.2,
+      "25th": 5.8,
+      "50th": 6.6,
+      "75th": 7.4,
+      "Max": 8.5
+    },
+    "non_us_equity_developed": {
+      "Min": 4.2,
+      "25th": 6.1,
+      "50th": 6.8,
+      "75th": 7.3,
+      "Max": 9.4
+    },
+    "non_us_equity_emerging": {
+      "Min": 5.5,
+      "25th": 7.0,
+      "50th": 7.9,
+      "75th": 8.3,
+      "Max": 9.5
+    },
+    "us_corporate_bonds_core": {
+      "Min": 2.5,
+      "25th": 2.9,
+      "50th": 3.3,
+      "75th": 3.8,
+      "Max": 5.0
+    },
+    "us_corporate_bonds_long_duration": {
+      "Min": 0.8,
+      "25th": 2.8,
+      "50th": 3.3,
+      "75th": 3.7,
+      "Max": 5.3
+    },
+    "us_corporate_bonds_high_yield": {
+      "Min": 3.6,
+      "25th": 4.5,
+      "50th": 4.8,
+      "75th": 5.1,
+      "Max": 6.0
+    },
+    "non_us_debt_developed": {
+      "Min": -0.5,
+      "25th": 1.6,
+      "50th": 2.3,
+      "75th": 2.7,
+      "Max": 4.5
+    },
+    "non_us_debt_emerging": {
+      "Min": 3.7,
+      "25th": 4.3,
+      "50th": 5.0,
+      "75th": 5.5,
+      "Max": 6.4
+    },
+    "us_treasuries_cash_equivalents": {
+      "Min": 1.8,
+      "25th": 2.3,
+      "50th": 2.5,
+      "75th": 2.8,
+      "Max": 3.0
+    },
+    "tips_inflation_protected": {
+      "Min": 2.1,
+      "25th": 2.6,
+      "50th": 2.8,
+      "75th": 3.2,
+      "Max": 4.0
+    },
+    "real_estate": {
+      "Min": 4.0,
+      "25th": 5.3,
+      "50th": 5.8,
+      "75th": 6.0,
+      "Max": 9.8
+    },
+    "hedge_funds": {
+      "Min": 3.6,
+      "25th": 4.2,
+      "50th": 4.6,
+      "75th": 5.5,
+      "Max": 7.3
+    },
+    "commodities": {
+      "Min": 2.0,
+      "25th": 3.8,
+      "50th": 3.9,
+      "75th": 4.5,
+      "Max": 6.1
+    },
+    "infrastructure": {
+      "Min": 4.8,
+      "25th": 6.2,
+      "50th": 6.8,
+      "75th": 7.1,
+      "Max": 7.8
+    },
+    "private_equity": {
+      "Min": 6.4,
+      "25th": 7.3,
+      "50th": 8.3,
+      "75th": 8.8,
+      "Max": 12.0
+    },
+    "private_debt": {
+      "Min": null,
+      "25th": null,
+      "50th": null,
+      "75th": null,
+      "Max": null
+    },
+    "inflation": {
+      "Min": 2.0,
+      "25th": 2.0,
+      "50th": 2.2,
+      "75th": 2.3,
+      "Max": 2.8
+    }
+  },
+  "2017": {
+    "us_equity_large_cap": {
+      "Min": 4.3,
+      "25th": 5.9,
+      "50th": 6.5,
+      "75th": 7.2,
+      "Max": 8.5
+    },
+    "us_equity_small_mid_cap": {
+      "Min": 4.3,
+      "25th": 6.3,
+      "50th": 7.0,
+      "75th": 7.7,
+      "Max": 9.4
+    },
+    "non_us_equity_developed": {
+      "Min": 4.5,
+      "25th": 6.5,
+      "50th": 7.0,
+      "75th": 7.4,
+      "Max": 9.7
+    },
+    "non_us_equity_emerging": {
+      "Min": 5.6,
+      "25th": 7.2,
+      "50th": 8.5,
+      "75th": 8.9,
+      "Max": 9.7
+    },
+    "us_corporate_bonds_core": {
+      "Min": 2.4,
+      "25th": 2.8,
+      "50th": 3.2,
+      "75th": 3.7,
+      "Max": 4.4
+    },
+    "us_corporate_bonds_long_duration": {
+      "Min": 2.6,
+      "25th": 3.1,
+      "50th": 3.7,
+      "75th": 4.0,
+      "Max": 5.0
+    },
+    "us_corporate_bonds_high_yield": {
+      "Min": 3.8,
+      "25th": 4.5,
+      "50th": 5.0,
+      "75th": 5.6,
+      "Max": 6.9
+    },
+    "non_us_debt_developed": {
+      "Min": 0.3,
+      "25th": 1.7,
+      "50th": 2.0,
+      "75th": 2.8,
+      "Max": 4.2
+    },
+    "non_us_debt_emerging": {
+      "Min": 3.8,
+      "25th": 4.8,
+      "50th": 5.3,
+      "75th": 5.8,
+      "Max": 6.8
+    },
+    "us_treasuries_cash_equivalents": {
+      "Min": 0.8,
+      "25th": 2.1,
+      "50th": 2.3,
+      "75th": 2.6,
+      "Max": 3.0
+    },
+    "tips_inflation_protected": {
+      "Min": 1.5,
+      "25th": 2.6,
+      "50th": 2.9,
+      "75th": 3.3,
+      "Max": 3.8
+    },
+    "real_estate": {
+      "Min": 4.0,
+      "25th": 5.5,
+      "50th": 5.9,
+      "75th": 6.7,
+      "Max": 9.8
+    },
+    "hedge_funds": {
+      "Min": 2.9,
+      "25th": 4.5,
+      "50th": 4.9,
+      "75th": 5.5,
+      "Max": 7.8
+    },
+    "commodities": {
+      "Min": 1.7,
+      "25th": 3.6,
+      "50th": 4.1,
+      "75th": 4.7,
+      "Max": 6.1
+    },
+    "infrastructure": {
+      "Min": 5.9,
+      "25th": 6.3,
+      "50th": 6.5,
+      "75th": 7.1,
+      "Max": 7.5
+    },
+    "private_equity": {
+      "Min": 6.6,
+      "25th": 8.0,
+      "50th": 8.6,
+      "75th": 10.0,
+      "Max": 12.0
+    },
+    "private_debt": {
+      "Min": null,
+      "25th": null,
+      "50th": null,
+      "75th": null,
+      "Max": null
+    },
+    "inflation": {
+      "Min": 1.6,
+      "25th": 2.0,
+      "50th": 2.2,
+      "75th": 2.5,
+      "Max": 2.8
+    }
+  },
+  "2016": {
+    "us_equity_large_cap": {
+      "Min": 5.1,
+      "25th": 6.1,
+      "50th": 6.9,
+      "75th": 7.2,
+      "Max": 8.0
+    },
+    "us_equity_small_mid_cap": {
+      "Min": 5.0,
+      "25th": 6.3,
+      "50th": 7.1,
+      "75th": 7.7,
+      "Max": 9.0
+    },
+    "non_us_equity_developed": {
+      "Min": 3.0,
+      "25th": 6.6,
+      "50th": 7.3,
+      "75th": 7.7,
+      "Max": 9.2
+    },
+    "non_us_equity_emerging": {
+      "Min": 5.8,
+      "25th": 7.5,
+      "50th": 8.5,
+      "75th": 9.6,
+      "Max": 11.3
+    },
+    "us_corporate_bonds_core": {
+      "Min": 2.1,
+      "25th": 3.0,
+      "50th": 3.3,
+      "75th": 3.7,
+      "Max": 5.3
+    },
+    "us_corporate_bonds_long_duration": {
+      "Min": 2.3,
+      "25th": 3.1,
+      "50th": 3.9,
+      "75th": 4.6,
+      "Max": 5.3
+    },
+    "us_corporate_bonds_high_yield": {
+      "Min": 3.7,
+      "25th": 5.4,
+      "50th": 5.8,
+      "75th": 6.8,
+      "Max": 7.5
+    },
+    "non_us_debt_developed": {
+      "Min": 0.9,
+      "25th": 1.7,
+      "50th": 2.3,
+      "75th": 3.1,
+      "Max": 4.6
+    },
+    "non_us_debt_emerging": {
+      "Min": 3.9,
+      "25th": 5.3,
+      "50th": 5.6,
+      "75th": 6.3,
+      "Max": 7.7
+    },
+    "us_treasuries_cash_equivalents": {
+      "Min": 0.3,
+      "25th": 2.0,
+      "50th": 2.2,
+      "75th": 2.4,
+      "Max": 3.5
+    },
+    "tips_inflation_protected": {
+      "Min": 1.9,
+      "25th": 2.5,
+      "50th": 2.7,
+      "75th": 3.0,
+      "Max": 5.0
+    },
+    "real_estate": {
+      "Min": 4.1,
+      "25th": 5.5,
+      "50th": 6.2,
+      "75th": 6.8,
+      "Max": 10.0
+    },
+    "hedge_funds": {
+      "Min": 4.2,
+      "25th": 4.7,
+      "50th": 5.3,
+      "75th": 6.0,
+      "Max": 7.6
+    },
+    "commodities": {
+      "Min": 1.8,
+      "25th": 3.0,
+      "50th": 3.8,
+      "75th": 4.8,
+      "Max": 6.8
+    },
+    "infrastructure": {
+      "Min": 5.5,
+      "25th": 6.3,
+      "50th": 6.6,
+      "75th": 6.8,
+      "Max": 8.0
+    },
+    "private_equity": {
+      "Min": 7.4,
+      "25th": 8.5,
+      "50th": 9.0,
+      "75th": 10.0,
+      "Max": 11.8
+    },
+    "private_debt": {
+      "Min": null,
+      "25th": null,
+      "50th": null,
+      "75th": null,
+      "Max": null
+    },
+    "inflation": {
+      "Min": 1.5,
+      "25th": 2.0,
+      "50th": 2.2,
+      "75th": 2.3,
+      "Max": 2.8
+    }
+  },
+  "2015": {
+    "us_equity_large_cap": {
+      "Min": 5.0,
+      "25th": 6.5,
+      "50th": 6.8,
+      "75th": 7.4,
+      "Max": 8.0
+    },
+    "us_equity_small_mid_cap": {
+      "Min": 3.0,
+      "25th": 6.6,
+      "50th": 7.0,
+      "75th": 7.9,
+      "Max": 9.0
+    },
+    "non_us_equity_developed": {
+      "Min": 3.1,
+      "25th": 6.7,
+      "50th": 7.3,
+      "75th": 7.9,
+      "Max": 9.5
+    },
+    "non_us_equity_emerging": {
+      "Min": 6.4,
+      "25th": 7.8,
+      "50th": 8.6,
+      "75th": 9.3,
+      "Max": 12.1
+    },
+    "us_corporate_bonds_core": {
+      "Min": 2.0,
+      "25th": 3.0,
+      "50th": 3.2,
+      "75th": 3.5,
+      "Max": 5.3
+    },
+    "us_corporate_bonds_long_duration": {
+      "Min": 2.0,
+      "25th": 3.2,
+      "50th": 3.8,
+      "75th": 4.5,
+      "Max": 5.3
+    },
+    "us_corporate_bonds_high_yield": {
+      "Min": 3.8,
+      "25th": 5.1,
+      "50th": 5.5,
+      "75th": 6.1,
+      "Max": 7.5
+    },
+    "non_us_debt_developed": {
+      "Min": 1.0,
+      "25th": 1.8,
+      "50th": 2.0,
+      "75th": 2.7,
+      "Max": 4.6
+    },
+    "non_us_debt_emerging": {
+      "Min": 4.3,
+      "25th": 5.1,
+      "50th": 5.6,
+      "75th": 6.2,
+      "Max": 8.2
+    },
+    "us_treasuries_cash_equivalents": {
+      "Min": 1.0,
+      "25th": 1.9,
+      "50th": 2.1,
+      "75th": 2.3,
+      "Max": 3.5
+    },
+    "tips_inflation_protected": {
+      "Min": 1.8,
+      "25th": 2.5,
+      "50th": 2.9,
+      "75th": 3.1,
+      "Max": 4.3
+    },
+    "real_estate": {
+      "Min": 4.5,
+      "25th": 6.0,
+      "50th": 6.2,
+      "75th": 6.8,
+      "Max": 8.5
+    },
+    "hedge_funds": {
+      "Min": 3.5,
+      "25th": 4.6,
+      "50th": 5.2,
+      "75th": 6.1,
+      "Max": 7.8
+    },
+    "commodities": {
+      "Min": 2.2,
+      "25th": 3.4,
+      "50th": 3.7,
+      "75th": 5.5,
+      "Max": 6.8
+    },
+    "infrastructure": {
+      "Min": 5.1,
+      "25th": 6.5,
+      "50th": 6.8,
+      "75th": 7.1,
+      "Max": 9.3
+    },
+    "private_equity": {
+      "Min": 7.2,
+      "25th": 8.5,
+      "50th": 8.9,
+      "75th": 9.7,
+      "Max": 13.2
+    },
+    "private_debt": {
+      "Min": null,
+      "25th": null,
+      "50th": null,
+      "75th": null,
+      "Max": null
+    },
+    "inflation": {
+      "Min": 1.7,
+      "25th": 2.0,
+      "50th": 2.2,
+      "75th": 2.3,
+      "Max": 2.8
+    }
+  }
+}

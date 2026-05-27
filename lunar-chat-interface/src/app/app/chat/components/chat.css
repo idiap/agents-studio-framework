@@ -1,0 +1,47 @@
+/*
+ * SPDX-FileCopyrightText: 2026 Copyright © 2026 Idiap Research Institute <contact@idiap.ch>
+ * SPDX-FileContributor: Danilo Gusicuma <danilo@lunarbase.ai>
+ *
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+
+#scroller * {
+  overflow-anchor: none;
+}
+
+#anchor {
+  overflow-anchor: auto;
+  height: 0px;
+}
+
+/* pulse.css */
+@keyframes pulseOpacity {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.pulse-icon {
+  animation: pulseOpacity 2s ease-in-out infinite;
+}
+
+table {
+  align-self: center;
+}
+
+.lunar-user-message::after {
+  content: "";
+  position: absolute;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #1E3257;
+  transform: rotate(270deg) scaleY(2);
+  right: 0px;
+  bottom: -4px;
+}
