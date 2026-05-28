@@ -187,6 +187,9 @@ beside the argumentation workflow, we added the "Agent création de supports de 
 4. **The output** : The outputs are seen in the Reports window.
 
 ![report_window](docs/images/reports_window.png)
+## Acknowledgment
+
+This work was supported by the 'AI Literacy and Literacy with AI' inter-institutional projec(Canton du Valais, Département de l’économie et de la formation, Service des hautes écoles,PInter 16-2025).
 
 ## Contact
 
